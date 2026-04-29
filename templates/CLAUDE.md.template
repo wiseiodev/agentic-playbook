@@ -1,0 +1,145 @@
+# <PROJECT NAME>
+
+<1-paragraph description of what the project does, who uses it.>
+
+## Stack
+
+- Language: <e.g. TypeScript 5.x>
+- Framework: <e.g. Next.js 15>
+- Database: <e.g. Postgres via Neon>
+- Package manager: <e.g. pnpm>
+- Test runner: <e.g. vitest>
+- Deploy: <e.g. Vercel>
+
+## Commands
+
+```bash
+pnpm install        # install deps
+pnpm dev            # dev server
+pnpm checks         # lint + types + tests + format (RUN BEFORE CLAIMING DONE)
+pnpm test           # tests only
+pnpm build          # production build
+```
+
+## Workflow
+
+This project follows the **agentic-engineering playbook**.
+For any non-trivial slice, follow the loop in `agentic-playbook/06-workflow-loop.md`:
+
+1. Per-task spec (BDD + constraints + examples) — see `templates/spec.template.md`
+2. Plan-first (use `/plan`) — wait for human approval before code
+3. Implement
+4. Self-QA: `pnpm checks`
+5. Anti-overengineering review: `/review`
+6. PR body via `/pr`
+
+Skills available: `/plan`, `/implement`, `/review`, `/decompose`, `/spec`, `/worktree`, `/cleanup-worktree`.
+Subagents available: `planner`, `anti-overeng-reviewer`, `decomposer`, `pr-author`.
+
+## Canonical patterns
+
+When adding a new feature, study the file matching its shape:
+
+- **Read-path features**: `<src/path/to/canonical-read.ts>`
+- **Write-path features**: `<src/path/to/canonical-write.ts>`
+- **AI-call features**: `<src/path/to/canonical-ai.ts>`
+
+**Mimic** structure, naming, error posture, and test layout. Do not invent new patterns.
+
+## Architecture decisions
+
+See `docs/adr/` for the decision log. Notable:
+
+- ADR-0001: <stack choice>
+- ADR-0002: <data layer>
+
+## Glossary
+
+See `CONTEXT.md` for domain terms. Use them precisely.
+
+## Constraints
+
+### Don't add what isn't asked for
+
+- Don't add features, refactors, or abstractions beyond what the spec requires.
+- Don't add error handling, fallbacks, or validation for cases that can't happen.
+  Trust internal code and framework guarantees. Validate only at system
+  boundaries (user input, external APIs).
+- Don't add config flags / feature flags for fixed behavior. Hard-code values
+  until a real second consumer appears.
+- Don't add backwards-compat shims, deprecated paths, or `// removed` comments.
+  Delete dead code outright.
+- Don't add `console.log` / `print` / debug instrumentation for shipping code.
+
+### Rule of three for abstractions
+
+- The first instance: write it inline.
+- The second instance: copy-paste; resist the urge to extract.
+- The third instance: extract a helper, ideally co-located.
+- Cross-module helpers / interfaces / generics: only when 3+ modules need them.
+
+### Files
+
+- Don't add new files unless the spec lists them under "Files to touch."
+- One feature usually lives in one file. Split only when parts are genuinely
+  independent (different consumers, different lifecycle).
+- No `utils.ts`, `helpers.ts`, `common.ts`. Co-locate; or live with duplication
+  until a real seam appears.
+
+### Comments
+
+- Default to writing no comments.
+- Add a comment only when the WHY is non-obvious (a hidden invariant, a
+  workaround for a specific bug, a constraint a reader would not infer).
+- Don't explain WHAT the code does — names do that.
+- Don't reference the current task or PR ("added for issue #123").
+
+### Tests
+
+- Test behavior, not implementation.
+- One assertion per test where reasonable.
+- No tests for getters/setters / trivial wrappers.
+- Don't mock what you can run real (DBs in tests, etc.) unless explicitly noted.
+
+### Plan-first
+
+- For any non-trivial slice, produce an implementation plan and wait for
+  approval before writing code.
+- The plan must:
+  - Cite the canonical example to mimic
+  - List exact files to add/modify
+  - List what the slice will NOT do
+  - Note any abstraction the slice introduces and justify why it's needed now
+
+## Tooling preferences
+
+- **Use CLIs over MCP servers**. Default to `gh`, `pnpm`, `linear`, `vercel`,
+  `psql`, etc. Only reach for MCP when no CLI exists.
+- **gh** is the primary surface for GitHub operations (PRs, issues, reviews).
+- **git worktrees** for parallel slices, never branch-switching in one dir.
+
+## Irrecoverable actions — confirm first
+
+The agent must ask before:
+
+- `git push --force` to any branch
+- `gh pr merge` (lands code)
+- `gh pr close` / `gh issue close` (visible to others)
+- DB migrations against shared / production
+- Posting to Slack / GitHub comments / external systems
+- Deleting branches / worktrees / files outside the slice
+
+Recoverable, local actions are free.
+
+## Commits
+
+- Conventional commit format always: `feat(scope): subject`, `fix(scope): subject`, etc.
+- NEVER stage files (`git add`) or commit unless explicitly asked.
+- Don't even offer; wait for the ask.
+- Never use `--no-verify`.
+
+## Honesty
+
+- If you can't test a UI change, say so. Don't claim "tested" without evidence.
+- If a check fails, fix the underlying issue. Don't bypass it.
+- If unsure, ask. Don't assume.
