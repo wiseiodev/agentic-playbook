@@ -1,0 +1,66 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          package_json_file: package.json
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Verify pnpm version
+        run: |
+          expected="$(node -p "require('./package.json').packageManager.replace(/^pnpm@/, '').split('+')[0]")"
+          actual="$(pnpm --version)"
+          test "$actual" = "$expected"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # Optional for apps with local DB-backed integration or E2E tests:
+      # - add a postgres service
+      # - set DATABASE_URL to the local service
+      # - run migrations and a DB health check before tests
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Unit tests
+        run: pnpm test
+
+      - name: Build
+        run: pnpm build
+
+      # Optional for browser apps with stable local E2E prerequisites:
+      # - name: Install Playwright browsers
+      #   run: pnpm exec playwright install --with-deps chromium
+      # - name: E2E tests
+      #   run: pnpm exec playwright test

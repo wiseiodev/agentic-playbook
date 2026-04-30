@@ -40,9 +40,9 @@ Mechanical checks the agent must run before claiming done:
 pnpm checks   # canonical: lint + types + tests + format
 ```
 
-Project-specific equivalents: `npm run validate`, `cargo check && cargo test`, `make ci`.
+Project-specific equivalents: `pnpm check`, `npm run validate`, `cargo check && cargo test`, `make ci`.
 
-**Add to CLAUDE.md the exact command** so every agent uses the same one.
+**Add to CLAUDE.md the exact command** so every agent uses the same one. For Node/TypeScript repos, use [13-quality-gates](./13-quality-gates.md) and `/setup-quality` to converge on the preferred Biome, Vitest, Commitlint, Lefthook, pnpm, and CI shape.
 
 For UI changes, add:
 - Open in browser via Playwright

@@ -22,18 +22,25 @@ Your day-1 setup. Roughly 4 hours of human time. Pays back within the first week
 - [ ] Fill commands section (`pnpm checks`, `pnpm dev`, etc.)
 - [ ] Leave Constraints section as-is (canonical anti-overeng list)
 
-### 3. Drop in subagents + skills + hooks (~30 min)
+### 3. Set up quality gates (~30-45 min)
+- [ ] Run `/setup-quality` or follow [13-quality-gates](./13-quality-gates.md)
+- [ ] Pin Node in `.nvmrc` and package manager in `packageManager`
+- [ ] Add or confirm Biome, Vitest, and the canonical `checks`/`check` command
+- [ ] Add Commitlint + Lefthook if commits should close Linear/GitHub work
+- [ ] Add CI from `templates/quality/github-actions-pnpm-ci.yml` and verify pnpm version matching
+
+### 4. Drop in subagents + skills + hooks (~30 min)
 - [ ] Copy `subagents/` → `.claude/agents/`
 - [ ] Copy `skills/` → `.claude/skills/`
 - [ ] Copy `hooks/` → wire into `.claude/settings.json`
 - [ ] Copy `templates/work-metrics.template.json` and `scripts/summarize-work-metrics.sh`
 
-### 4. First two ADRs (~30 min)
+### 5. First two ADRs (~30 min)
 - [ ] ADR-0001: stack choice + reasoning
 - [ ] ADR-0002: state management / data layer choice
 - Each ADR is 1 page max. Use `templates/adr.template.md`.
 
-### 5. Hand-shape reference feature #1 (~90 min)
+### 6. Hand-shape reference feature #1 (~90 min)
 Pick the simplest representative slice (e.g., one CRUD entity end-to-end).
 - [ ] Write spec yourself first (use spec template)
 - [ ] Write code yourself or with very tight AI assist (you drive every choice)
@@ -42,10 +49,10 @@ Pick the simplest representative slice (e.g., one CRUD entity end-to-end).
 
 ## Monday PM (2-3 hours)
 
-### 6. Hand-shape reference feature #2 (~90 min)
+### 7. Hand-shape reference feature #2 (~90 min)
 Pick a different shape from #1 (e.g., if #1 was read-path, do write-path; if #1 was REST, do streaming).
 
-### 7. First agent slice (~60 min)
+### 8. First agent slice (~60 min)
 Pick a simple #3 feature. **Hand it to an agent**, follow the workflow loop end-to-end:
 - [ ] Author spec (Given/When/Then + constraints + examples)
 - [ ] Worktree

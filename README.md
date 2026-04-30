@@ -21,12 +21,13 @@ This starts as a personal workflow. Team sharing comes later, after the rules ha
 11. [10-sharing-with-team](./10-sharing-with-team.md) — onboarding ramp, adoption pattern
 12. [11-monday-checklist](./11-monday-checklist.md) — your day-1 setup checklist
 13. [12-metrics-and-telemetry](./12-metrics-and-telemetry.md) — local success metrics, report sidecars, telemetry stance
+14. [13-quality-gates](./13-quality-gates.md) — preferred Biome, Vitest, Commitlint, Lefthook, pnpm, and CI setup
 
 ## Drop-in artifacts
 
-- [templates/](./templates/) — CLAUDE.md, spec, ADR, PRD, story
+- [templates/](./templates/) — CLAUDE.md, spec, ADR, PRD, PR body, metrics, quality-gate snippets
 - [subagents/](./subagents/) — planner, anti-overeng-reviewer, decomposer, pr-author
-- [skills/](./skills/) — `/linearize`, `/work`, `/plan`, `/implement`, `/review`, `/decompose`, `/bootstrap`, `/spec`, `/worktree`, `/cleanup-worktree`
+- [skills/](./skills/) — `/linearize`, `/work`, `/setup-quality`, `/plan`, `/implement`, `/review`, `/pr`, `/decompose`, `/bootstrap`, `/spec`, `/worktree`, `/cleanup-worktree`
 - [hooks/](./hooks/) — stop-hook checks, dangerous-command guard, pre-tool safety examples
 - [scripts/](./scripts/) — local report-sidecar summarizers
 

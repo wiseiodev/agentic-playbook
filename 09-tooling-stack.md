@@ -113,9 +113,11 @@ Slash commands that bundle a workflow. Loaded on demand.
 |---|---|
 | `/linearize` | Turn an idea into a Linear Project-as-PRD and approved issue queue |
 | `/work` | Execute one scoped implementation slice end-to-end with full ceremony |
+| `/setup-quality` | Add or tighten preferred quality-gate tooling in a repo |
 | `/plan` | Invoke planner subagent against current spec |
 | `/implement` | Run implementation phase (after plan approved) |
 | `/review` | Run anti-overeng reviewer on current diff |
+| `/pr` | Draft or open a PR after gates and report are ready |
 | `/decompose <prd>` | Run decomposer subagent on a PRD |
 | `/bootstrap` | Hand-shape a reference feature (interactive guide) |
 | `/worktree <slice>` | Create worktree with naming convention |
@@ -125,6 +127,8 @@ Slash commands that bundle a workflow. Loaded on demand.
 Definitions in [`skills/`](./skills/).
 
 `/work` is the operational core. It authorizes branch, commit, push, and Ready PR after gates pass. The other skills remain composable building blocks when you want to run a phase manually.
+
+`/setup-quality` is the tooling setup path. Use it during day-1 bootstrap or when a repo's gates are inconsistent. It inspects the repo before editing, then adapts the preferred Biome, Vitest, Commitlint, Lefthook, pnpm, Turbo, and CI patterns from [13-quality-gates](./13-quality-gates.md).
 
 ### Skill source of truth
 
@@ -157,6 +161,23 @@ Install on Monday alongside everything else:
 | `psql` / DB CLI | Schema introspection | For agents to verify migrations |
 
 Each gets a CLAUDE.md mention so the agent knows it's available and prefers it over MCP equivalents.
+
+## Quality-gate stack
+
+For Node/TypeScript projects, the preferred local stack is:
+
+- Node pinned in `.nvmrc`
+- pnpm pinned in `packageManager`
+- Biome for lint, format, and import organization
+- Vitest for tests
+- Turbo for monorepo orchestration only when it earns its keep
+- Commitlint for conventional commits plus issue-closing footers
+- Lefthook for pre-commit, commit-msg, and pre-push checks
+- GitHub Actions that verify the pinned pnpm version before installing
+
+The templates live in [`templates/quality/`](./templates/quality/), and the full guidance lives in [13-quality-gates](./13-quality-gates.md).
+
+Keep this repo-adaptive. A Rust, Python, or Bun repo should still expose one obvious quality command, but it should use its own formatter, typechecker, test runner, and package manager.
 
 ## Metrics and telemetry
 

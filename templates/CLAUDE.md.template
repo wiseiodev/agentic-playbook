@@ -17,9 +17,14 @@
 pnpm install        # install deps
 pnpm dev            # dev server
 pnpm checks         # lint + types + tests + format (RUN BEFORE CLAIMING DONE)
+pnpm checks:fix     # local autofix path when available
+pnpm lint           # lint / format check
+pnpm typecheck      # typecheck only
 pnpm test           # tests only
 pnpm build          # production build
 ```
+
+Quality-gate setup follows `agentic-playbook/13-quality-gates.md`. For Node/TypeScript repos, prefer pinned pnpm via `packageManager`, Node via `.nvmrc`, Biome, Vitest, Commitlint for issue-linked commits, Lefthook for local hooks, and CI that verifies the pinned pnpm version.
 
 ## Workflow
 
@@ -37,7 +42,7 @@ For manual phase control, use the lower-level loop:
 5. Anti-overengineering review: `/review`
 6. PR body via `/pr`
 
-Skills available: `/linearize`, `/work`, `/plan`, `/implement`, `/review`, `/decompose`, `/spec`, `/worktree`, `/cleanup-worktree`.
+Skills available: `/linearize`, `/work`, `/setup-quality`, `/plan`, `/implement`, `/review`, `/pr`, `/decompose`, `/bootstrap`, `/spec`, `/worktree`, `/cleanup-worktree`.
 Subagents available: `planner`, `anti-overeng-reviewer`, `decomposer`, `pr-author`.
 
 When you need user input, use the question tool if available. Do not ask for decisions in plain prose when a structured question tool exists.
@@ -123,6 +128,10 @@ See `CONTEXT.md` for domain terms. Use them precisely.
   `psql`, etc. Only reach for MCP when no CLI exists.
 - **gh** is the primary surface for GitHub operations (PRs, issues, reviews).
 - **git worktrees** for parallel slices, never branch-switching in one dir.
+- **Quality gates** should be explicit in package scripts or the repo's task
+  runner. Agents discover and run the real repo command, not a guessed one.
+- **Hooks** may auto-fix staged formatting, but agents must never bypass them
+  with `--no-verify`.
 
 ## Irrecoverable actions — confirm first
 

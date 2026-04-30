@@ -1,6 +1,6 @@
 ---
 name: bootstrap
-description: Interactive guide for hand-shaping a reference feature in a greenfield repo. Use on day 1 of a new project to seed canonical patterns before agents take over. Triggers on /bootstrap, "bootstrap a reference feature", "scaffold a canonical pattern".
+description: Interactive guide for hand-shaping a reference feature in a greenfield repo. Use on day 1 of a new project to seed quality gates and canonical patterns before agents take over. Triggers on /bootstrap, "bootstrap a reference feature", "scaffold a canonical pattern".
 ---
 
 # /bootstrap
@@ -10,11 +10,16 @@ Walk the user through hand-shaping a reference feature. The agent acts as a **ty
 ## When to use
 
 - Greenfield repo, day 1.
+- You have already run `/setup-quality`, or you want to be reminded to do it before feature canonicals.
 - You want to seed 2-3 canonical patterns before letting agents loose.
 - See `agentic-playbook/04-greenfield-bootstrap.md` for context.
 
 ## Steps
 
+0. Confirm quality gates exist:
+   - Canonical quality command is in CLAUDE.md or repo instructions.
+   - Formatter/linter, typecheck, tests, and build are wired.
+   - For Node/TypeScript repos, `/setup-quality` has handled Biome, Vitest, package scripts, CI, and optional Commitlint/Lefthook.
 1. Ask the user:
    - Which shape is this reference feature? (read-path, write-path, async, AI-call, integration, auth)
    - What's the simplest concrete instance? (e.g. "list users" for read-path)
@@ -33,7 +38,7 @@ Walk the user through hand-shaping a reference feature. The agent acts as a **ty
     */
    ```
 4. Add a corresponding test file. Test behavior, not implementation.
-5. Run `pnpm checks` to confirm it's clean.
+5. Run the repo's canonical quality command to confirm it's clean.
 6. Update CLAUDE.md's "Canonical patterns" section:
    ```markdown
    - **<shape> features**: `<path>`
