@@ -26,6 +26,7 @@ Your day-1 setup. Roughly 4 hours of human time. Pays back within the first week
 - [ ] Copy `subagents/` → `.claude/agents/`
 - [ ] Copy `skills/` → `.claude/skills/`
 - [ ] Copy `hooks/` → wire into `.claude/settings.json`
+- [ ] Copy `templates/work-metrics.template.json` and `scripts/summarize-work-metrics.sh`
 
 ### 4. First two ADRs (~30 min)
 - [ ] ADR-0001: stack choice + reasoning
@@ -46,11 +47,12 @@ Pick a different shape from #1 (e.g., if #1 was read-path, do write-path; if #1 
 
 ### 7. First agent slice (~60 min)
 Pick a simple #3 feature. **Hand it to an agent**, follow the workflow loop end-to-end:
-- [ ] Author spec (BDD + constraints + examples)
+- [ ] Author spec (Given/When/Then + constraints + examples)
 - [ ] Worktree
 - [ ] Plan-mode → review plan → approve
 - [ ] Implement
 - [ ] Self-QA + anti-overeng review subagent
+- [ ] `.reports/<work-id>.metrics.json` created from the template
 - [ ] PR
 - [ ] You review → merge
 
@@ -75,5 +77,5 @@ If you see these, **stop and tighten** before scaling parallelism:
 ## Calibration cadence
 
 - **End of week 1**: re-read playbook, edit anything that didn't hold up
-- **End of week 2**: try 3 concurrent worktrees if rework rate is flat
+- **End of week 2**: try 3 concurrent worktrees if rework, review load, and waivers are flat
 - **End of month 1**: write team-onboarding doc (see [10-sharing-with-team](./10-sharing-with-team.md))

@@ -29,8 +29,8 @@ Spawn the **pr-author** subagent to write the PR body, then open the PR via `gh`
    - The plan file path
    - The reviewer output (or note that it ran clean)
 4. Subagent writes `pr-body.md` and outputs the suggested `gh pr create` invocation.
-5. Show the suggested command to the user. **Wait for confirmation** before running.
-6. Once user confirms, run:
+5. Show the suggested command to the user. **Wait for confirmation** before running unless this is being run inside `/work`, where PR creation was authorized by the `/work` invocation.
+6. If confirmation is required, wait for it. Then run:
    ```bash
    gh pr create --title "<title>" --body "$(cat pr-body.md)"
    ```
@@ -38,7 +38,7 @@ Spawn the **pr-author** subagent to write the PR body, then open the PR via `gh`
 
 ## Hard rules
 
-- **Always confirm before opening the PR.** PR creation is externally visible.
+- **Always confirm before opening the PR** unless running inside `/work`. PR creation is externally visible, and `/work` is the pre-authorization path.
 - **Don't bypass `pnpm checks`** even if "the user said it was fine."
 - **Title under 70 characters.** Body holds the detail.
 - **Conventional commit format** for the title (`feat(scope): subject` etc.).

@@ -2,6 +2,8 @@
 
 The single most leveraged document in your workflow. The spec is what stops a smart model from inventing factories you didn't ask for.
 
+For non-trivial work, Given/When/Then is the canonical spine. Use it as planning language and acceptance criteria, not as a mandate to install Cucumber or build an executable acceptance-test framework.
+
 ## Canonical structure
 
 ```markdown
@@ -19,8 +21,10 @@ The single most leveraged document in your workflow. The spec is what stops a sm
 - Bullet 2
 
 ## Behavior (Given/When/Then)
-- **Given** <state>, **when** <action>, **then** <observable outcome>
-- **Given** ..., **when** ..., **then** ...
+- **Scenario: <short behavior name>**
+  **Given** <state>, **when** <action>, **then** <observable outcome>
+- **Scenario: <short behavior name>**
+  **Given** ..., **when** ..., **then** ...
 
 ## Examples
 **Input:**
@@ -44,7 +48,7 @@ The single most leveraged document in your workflow. The spec is what stops a sm
 - src/features/<X>/foo.test.ts
 
 ## Done when
-- [ ] All Given/When/Then green
+- [ ] Every Given/When/Then scenario is verified by a test or QA evidence
 - [ ] `pnpm checks` passes
 - [ ] No new files outside the list above
 - [ ] Anti-overeng review subagent: no flags
@@ -57,7 +61,7 @@ The single most leveraged document in your workflow. The spec is what stops a sm
 | **Intent** | Slice that's technically right but solves the wrong problem |
 | **In scope** | Anchor for the agent — explicit list of what counts |
 | **Out of scope** | Scope creep ("while we're here, I refactored the helper") |
-| **Behavior (BDD)** | Misunderstanding intent; ambiguity on edge cases |
+| **Behavior (Given/When/Then)** | Misunderstanding intent; ambiguity on observable outcomes |
 | **Examples** | Misinterpreting types/shapes; gives the model a target to mimic |
 | **Constraints** | Premature abstraction, defensive code — the top failure modes |
 | **Files to touch** | New file/folder explosion; surgical impl |
@@ -95,7 +99,7 @@ You don't write the spec from scratch. The agent does.
 
 The agent drafting the spec is fine because:
 - The format is structured
-- You edit the slots that matter (out-of-scope, constraints)
+- You edit the slots that matter (behavior, out-of-scope, constraints)
 - The decomposer subagent has CLAUDE.md context
 
 See [`subagents/decomposer.md`](./subagents/decomposer.md) for the subagent definition.
@@ -105,7 +109,7 @@ See [`subagents/decomposer.md`](./subagents/decomposer.md) for the subagent defi
 A spec that produces a tracer-bullet slice (1-3hr) is usually:
 
 - ~50-150 lines of markdown
-- 3-7 BDD scenarios
+- 3-7 Given/When/Then scenarios
 - 1-3 examples
 - 4-8 constraints
 - 2-6 files in "Files to touch"
@@ -144,6 +148,7 @@ Model has nothing to invent.
 
 Every checkbox in "Done when" should be **mechanically verifiable** by the agent:
 
+- ✅ Every Given/When/Then scenario has a test or QA evidence (mechanical)
 - ✅ `pnpm checks` passes (mechanical)
 - ✅ No new files outside list (mechanical, agent diffs the list)
 - ✅ Anti-overeng review: no flags (mechanical, subagent runs)
@@ -151,6 +156,12 @@ Every checkbox in "Done when" should be **mechanically verifiable** by the agent
 - ❌ "Tests are good" (subjective)
 
 Mechanical = verifiable = the agent can self-confirm before handing off.
+
+## Question-tool policy
+
+If the agent needs user input for a clarification, tradeoff, confirmation, or scope decision, it must use the question tool when the environment provides one. Do not bury decisions in prose and hope they survive the session.
+
+If no question tool exists, ask directly and record the answer in the spec before implementation continues.
 
 ## Iterating the spec template
 

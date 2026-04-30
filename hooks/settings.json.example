@@ -20,7 +20,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": ".claude/hooks/pre-commit-safety.sh",
+            "command": ".claude/hooks/block-dangerous-commands.sh",
             "timeout": 5000
           }
         ]

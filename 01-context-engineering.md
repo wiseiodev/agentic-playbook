@@ -9,7 +9,7 @@ Five layers, narrowest-scope to broadest. Each layer has a different rate of cha
 
 ```
 ┌─────────────────────────────────────────────┐
-│  L5: Per-task spec  (BDD + constraints)     │  ← changes every task
+│  L5: Per-task spec  (Given/When/Then + constraints) │  ← changes every task
 │  L4: Plan          (model-authored, gated)  │  ← changes every task
 │  L3: Per-area CLAUDE.md / CONTEXT.md        │  ← changes weekly
 │  L2: Golden examples (live src/ files)      │  ← changes monthly
@@ -82,7 +82,7 @@ See [06-workflow-loop](./06-workflow-loop.md) for the plan gate mechanics.
 
 ## Layer 5 — Per-task spec
 
-Every task gets a spec. Format: BDD + constraints + examples.
+Every non-trivial task gets a spec. Format: Given/When/Then + constraints + examples.
 See [02-spec-format](./02-spec-format.md) for the canonical shape.
 
 The spec is the single highest-leverage place to prevent overengineering.
@@ -116,6 +116,6 @@ You can't change *order*, but you can change what's in each layer. Keep root CLA
 
 ## Calibration
 
-Measure context quality by **the rework rate of identical tasks across weeks**.
+Measure context quality by **rework rate, repeated anti-overeng flags, and plan/spec violations across similar tasks**.
 If the same shape of task overengineers twice in two weeks, the context is wrong, not the model.
 Update CLAUDE.md or the spec template; don't yell at the agent.

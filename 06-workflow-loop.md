@@ -1,238 +1,232 @@
 # 06 — Workflow Loop
 
-The end-to-end path from a PRD to a merged PR. Plan-first always. Multiple gates. Self-authored handoffs.
+The default path for agent-owned implementation is `/work`: one scoped work item, full ceremony, Ready PR. The lower-level skills still exist, but `/work` is the operating contract when you want an agent to carry the slice end-to-end.
 
-## Overview
+## Default loop
 
 ```
-PRD (you)
+Idea / PRD / issue / approved plan
   ↓
-Decompose (decomposer subagent + you edit) → ordered list of tracer-bullet slices
+/linearize <idea> (when Linear Project + issues do not exist yet)
   ↓
-[ for each slice, possibly in parallel worktrees ]
+/work <one work item>
   ↓
-Spec (decomposer drafts; you edit constraints) — see 02-spec-format
+Intake: source docs, blockers, dependencies, acceptance criteria
   ↓
-Worktree + branch (git worktree add)
+Spec: Given/When/Then + scope + constraints + files-to-touch
   ↓
-Plan (planner subagent) ←──── GATE 1: you approve plan
+Branch / worktree isolation
   ↓
-Implement (implementer agent)
+Plan gate: human approves direction
   ↓
-Self-QA (lint + types + tests + browser sanity if UI) ←── GATE 2: must be green
+Implementation
   ↓
-Anti-overeng review (reviewer subagent on diff) ←── GATE 3: zero flags
+Self-QA: repo gates + behavior evidence
   ↓
-PR description (agent writes; spec + plan + diff context)
+Anti-overeng review
   ↓
-PR open
+Adversarial review
   ↓
-You: read PR, click merge ←──── GATE 4: human approval
+Report: what shipped, gates, evidence, remaining risk
   ↓
-Merge → main
+Metrics sidecar: local JSON receipt
   ↓
-Worktree cleanup (skill: /cleanup-worktree)
+Commit + push + Ready PR
+  ↓
+Human review and merge
+  ↓
+Cleanup
 ```
 
-## Phase-by-phase
+Invoking `/work` is explicit authorization for the agent to branch, commit, push, and open a Ready PR after the required gates pass. It is not authorization to merge, close issues, run destructive infrastructure commands, force-push, bypass hooks, or expand scope.
 
-### Phase 0 — PRD (you)
+Humans can waive gates. Agents cannot self-waive.
 
-Output: `docs/prds/<feature>.md` using `templates/prd.template.md`.
-Time: 5-30 min. Don't over-specify implementation; describe user value + constraints.
+## Lower-level commands
 
-### Phase 1 — Decompose
+Use the smaller skills when you want to stay in control of a phase:
 
-Invoke: `/decompose docs/prds/<feature>.md`
-Output: ordered list of slice specs in `docs/specs/<feature>/01-*.md`, `02-*.md`, ...
+| Skill | Use when |
+|---|---|
+| `/linearize` | Turn an idea into a Linear Project-as-PRD and approved issue queue |
+| `/decompose` | Turn a PRD into ordered tracer-bullet specs |
+| `/spec` | Create or polish one per-task spec |
+| `/plan` | Produce an implementation plan for human approval |
+| `/implement` | Code against an already-approved plan |
+| `/review` | Run the anti-overengineering review |
+| `/pr` | Draft/open a PR after gates are clean |
+| `/worktree` | Create isolated worktree/branch for a slice |
+| `/cleanup-worktree` | Remove merged worktree and branch |
 
-You edit:
-- Drop unnecessary slices
-- Reorder for risk/value
-- Mark independent slices as parallelizable
-- Tighten constraints per slice
+The lower-level skills remain conservative. For example, `/pr` may ask before opening a PR; `/work` already has that authorization because the command itself is the contract.
 
-### Phase 2 — Worktree + branch
+## Phase details
 
-Per slice:
+### Phase 0 — Source of work
+
+Input can be a PRD, GitHub issue, Linear issue, approved plan phase, or a directly stated one-slice task. If the input is still only an idea and the work should live in Linear, run `/linearize` first to create the Project and issue queue.
+
+The agent extracts:
+
+- Work id and title
+- Acceptance criteria
+- Scope boundaries and sibling work to avoid
+- Dependencies and blockers
+- Repo conventions, commands, ADRs, and canonical examples
+
+If the source is ambiguous, the agent uses the question tool. If the answer is discoverable from files, issues, or repo conventions, the agent explores instead of asking.
+
+### Phase 1 — Spec
+
+Every non-trivial slice gets a spec using [02-spec-format](./02-spec-format.md).
+
+The behavior section is mandatory:
+
+```markdown
+## Behavior (Given/When/Then)
+- **Scenario: happy path**
+  **Given** ..., **when** ..., **then** ...
+```
+
+This is planning language, not a requirement to install Cucumber. The goal is to constrain observable behavior before implementation starts.
+
+### Phase 2 — Branch / worktree
+
+Use isolated branch state for agent-owned work.
+
+For normal feature work:
+
 ```bash
 git worktree add ../myproject.<slice-id> -b feat/<slice-id>
-cd ../myproject.<slice-id>
 ```
 
-Each agent session opens in its own worktree. No `cd`-ing between worktrees in one session — confuses git state and CLAUDE.md loading.
+For Linear work, use the canonical Linear branch name when available:
 
-### Phase 3 — Plan
+```bash
+linear issues branch <ISSUE-ID> --json
+```
 
-Invoke: `/plan` (skill) → planner subagent runs.
+Do not reuse a worktree across slices. Do not work from dirty state unless the user explicitly decides how to handle it.
 
-Plan output (markdown) covers:
-- Files to add/modify (must match spec's "Files to touch")
-- Approach in prose
+### Phase 3 — Plan gate
+
+The plan must name:
+
+- Files to add or modify
 - Canonical example being mimicked
-- What the slice will NOT do (echoes spec's "Out of scope")
-- Any new abstraction + justification (per Rule of Three)
+- What the slice will not do
+- Any abstraction introduced and why it is needed now
+- Risks and verification steps
 
-**GATE 1: You read the plan, approve or push back.**
-
-Common pushbacks:
-- "You're adding a helper file with one caller. Inline it."
-- "You're wrapping the API call in try/catch. Don't."
-- "You're modifying file X which is out-of-scope per spec."
-
-If pushback comes, agent revises plan. Loop until approved.
-
-Why this gate matters: it's the cheapest place to kill overengineering. Catching it in the plan costs 30 seconds; catching it in the diff costs 10 minutes.
+The human approves the plan or pushes back. If the agent later discovers the plan is wrong, it stops and uses the question tool rather than improvising.
 
 ### Phase 4 — Implement
 
-Invoke: `/implement` after plan is locked.
+Implementation follows the approved plan and the spec.
 
-The agent codes against the plan. Mid-implementation, if it discovers the plan is wrong, it stops and asks rather than improvising.
+Hard boundaries:
 
-Common pause points:
-- Spec is ambiguous on a behavior
-- Discovered an existing helper that contradicts the plan's approach
-- Test failure reveals a wrong assumption
-
-Default response: agent stops, summarizes the issue, asks. You decide.
+- No sibling issues or phases
+- No files outside the plan/spec unless the user approves
+- No new abstractions unless sanctioned by the plan
+- No defensive code for impossible internal cases
+- No hook bypasses
 
 ### Phase 5 — Self-QA
 
-The agent runs:
-```bash
-pnpm checks   # lint + types + tests, project-specific
+Run the repo's actual quality gates. Discover them from package scripts, task runners, README, AGENTS/CLAUDE guidance, CI, or Makefiles. Do not hard-code `pnpm checks` into a repo that uses another gate.
+
+Required categories when available:
+
+- Format/lint
+- Typecheck/compile
+- Unit tests
+- Integration tests when touched code crosses module boundaries
+- Build
+- E2E/browser checks when UI behavior changed
+
+For UI work, capture behavior evidence: browser check, screenshot, recording, or a concise fallback proof when recording is not useful.
+
+### Phase 6 — Anti-overeng review
+
+The anti-overeng reviewer reads the diff, spec, plan, and constraints. It only flags overengineering:
+
+- Premature abstractions
+- Defensive code without a real failure mode
+- Scope creep
+- New files or dependencies not approved
+- Custom wrappers around framework primitives
+- Implementation-detail tests
+
+Zero unresolved flags before PR unless the human explicitly overrides.
+
+### Phase 7 — Adversarial review
+
+Run adversarial review on the intended diff before commit when using `/work`.
+
+Resolve every critical and major finding. Minor/nitpick findings may remain only if recorded in the report.
+
+This is separate from anti-overeng review: anti-overeng protects simplicity; adversarial review protects correctness, security, and design misses.
+
+### Phase 8 — Report
+
+The report is the agent's human-readable audit trail. Keep it concise, but include:
+
+- Work id/title
+- What shipped
+- Dependencies found during intake
+- Files changed or diff stat
+- Tests and gates run
+- Self-QA evidence
+- Anti-overeng review result
+- Adversarial review result
+- Acceptance criteria status
+- Commit SHA once committed
+
+Use an existing repo report template if present. Otherwise create a small `.reports/<work-id>.html` or `.reports/<work-id>.md` with the same sections.
+
+Create the machine-readable metrics sidecar beside the report:
+
+```text
+.reports/<work-id>.metrics.json
 ```
 
-For UI changes, additionally:
-- Open in browser (Playwright skill)
-- Take screenshot
-- Verify happy path interactively
+Use [templates/work-metrics.template.json](./templates/work-metrics.template.json). The sidecar records the same facts in a stable shape: spec coverage, planned vs changed files, gates, QA evidence, review findings, waivers, commit, and PR URL when available. It is the source for local weekly summaries; raw agent logs are optional enrichment, not the contract.
 
-**GATE 2: Self-QA must be green before next phase.**
+### Phase 9 — Commit, push, Ready PR
 
-If broken, the agent fixes and re-runs. Doesn't proceed to review until green.
+Only after gates, self-QA, anti-overeng review, adversarial review, report, and metrics sidecar are complete:
 
-### Phase 6 — Anti-overengineering review
+1. Stage the exact intended files.
+2. Commit once with a conventional message and appropriate issue footer.
+3. Push the branch.
+4. Open a Ready PR whose body mirrors the report.
+5. Backfill `commit_sha`, `ready_pr_at`, and `pr_url` in the metrics sidecar if they were not known before commit/PR creation.
 
-Invoke (or auto-invoked by skill): anti-overeng-reviewer subagent.
+Do not merge. Human review remains the final gate.
 
-Subagent reads:
-- The diff
-- The spec (constraints + out-of-scope)
-- CLAUDE.md (canonical constraints list)
-- The plan (sanctioned exceptions)
+## When to use less ceremony
 
-Output: list of flags (line numbers + reason) or "no flags."
+The agent does not decide to skip gates. The human can waive them.
 
-**GATE 3: Zero flags before PR.**
+Reasonable human waivers:
 
-For each flag, the implementing agent fixes (usually deletes/inlines) and re-runs the reviewer. Loop until clean.
+- Typo or wording-only docs edit
+- One-line config fix with no runtime behavior
+- Read-only investigation
+- Throwaway spike that will not be merged
+- Emergency hotfix where the human explicitly accepts a narrower gate
 
-### Phase 7 — PR description
-
-The agent writes the PR body using `templates/pr-body.template.md`:
-
-```markdown
-## What
-1-2 sentences.
-
-## Why
-Reference the PRD/spec.
-
-## Scope
-Confirms what's in and what's out (mirrors spec).
-
-## How tested
-- Self-QA: pnpm checks ✅
-- Browser test (if UI): screenshot inline
-- Anti-overeng review: no flags
-
-## Notes for reviewer
-Anything unusual about the diff.
-```
-
-The act of writing this forces the agent to articulate intent. Misalignment surfaces here.
-
-### Phase 8 — PR open
-
-```bash
-gh pr create --title "<conventional-commit-style>" --body "$(cat pr-body.md)"
-```
-
-### Phase 9 — Human review (you)
-
-**GATE 4: human eyes on the diff.**
-
-You scan:
-- Spec adherence (does the diff match what was asked?)
-- Constraint violations the reviewer subagent missed
-- Vibes: does this read like the canonical pattern?
-
-For 2-3 concurrent slices, this is your main bottleneck. Keep slices small to keep this fast.
-
-### Phase 10 — Merge + cleanup
-
-```bash
-gh pr merge --squash
-```
-
-Then in the original repo (not the worktree):
-```bash
-git worktree remove ../myproject.<slice-id>
-git branch -d feat/<slice-id>
-```
-
-Skill `/cleanup-worktree` automates this.
-
-## Loop cadence (target)
-
-For a single slice, end-to-end:
-
-| Phase | Duration |
-|---|---|
-| Spec edit | 1-3 min |
-| Plan + your approval | 3-10 min |
-| Implement | 20-90 min (mostly agent time) |
-| Self-QA | 1-5 min |
-| Anti-overeng review + fix | 1-10 min |
-| PR description + open | 1-3 min |
-| Your review + merge | 5-15 min |
-| **Total** | **30-150 min** |
-
-If a slice exceeds this, root cause is usually:
-- Slice too big (re-decompose)
-- Spec too vague (tighten)
-- Plan was wrong (gate 1 too lenient)
-
-## When to break the loop
-
-Skip phases for:
-
-- **Trivial fixes**: typo, one-line bug, dependency bump → straight to code + gate 4
-- **Hotfix under pressure**: skip plan, run QA + reviewer minimum
-- **Spike / exploration**: throw away the slice, no review, but **don't merge spike code**
-
-For everything else, full loop.
-
-## Loop variants
-
-### Background-agent loop
-
-For very-low-risk slices (codemod, mechanical refactor), run the agent in the background and check in later. Same gates, but you batch the gate-4 reviews.
-
-### Pair-with-agent loop
-
-For high-risk or learning-mode slices (you want to understand what's happening), keep the agent in foreground, watch every step, intervene early. Same gates but you're a constant participant.
-
-Default: **non-pair, gates intact**.
+If a waiver is given, record it in the handoff or report. Also record it in the metrics sidecar. Agents may record human waivers; they may not create waivers for themselves.
 
 ## Failure modes of the loop
 
 | Failure | Symptom | Fix |
 |---|---|---|
-| Plan-gate too lenient | Overeng reaches diff | Tighten what the planner subagent must include |
-| Self-QA insufficient | Bugs reach human review | Expand `pnpm checks`, add Playwright steps |
-| Reviewer misses flags | You catch overeng at gate 4 | Add the missed pattern to reviewer's checklist |
-| You skip gate 4 | Bad code lands in main | Don't. Always read the diff. |
-| Loop too slow | Throughput drops | Slice smaller, parallelize, sharpen specs |
+| Spec too loose | Correct-looking code solves the wrong thing | Add Given/When/Then scenarios and out-of-scope |
+| Plan gate too lenient | Overeng reaches diff | Require files, examples, non-goals, abstractions |
+| Self-QA weak | Bugs reach PR review | Strengthen repo gates or add targeted QA evidence |
+| Anti-overeng misses | You catch cleverness in review | Add the pattern to the reviewer checklist |
+| Adversarial review skipped | Correctness issues survive | Keep `/work` strict; only human can waive |
+| Agent self-waives | "Small change" bypasses contract | Treat as trust break; update skill/hook instructions |
+| Metrics missing | Weekly readout becomes vibes | Require `.reports/<work-id>.metrics.json` before Ready PR |

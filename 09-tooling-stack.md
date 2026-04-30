@@ -1,6 +1,8 @@
 # 09 — Tooling Stack
 
-Agent-side primitives that make the workflow loop work. Defaults: **subagents + hooks + skills + CLIs**. MCP servers only when no CLI exists.
+Agent-side primitives that make the workflow loop work. Defaults: **skills + subagents + hooks + CLIs**. MCP servers only when no CLI exists.
+
+This is curated from the local setup that has actually paid rent. Do not bundle every personal setting into every repo. Extract the pattern, then let each project tune it.
 
 ## Why CLIs over MCP
 
@@ -46,9 +48,11 @@ Specialized agents the main agent invokes for specific phases. Each has a tight 
 
 ## Hooks
 
-Mechanical enforcement that runs without model judgment. Cheap, reliable.
+Mechanical enforcement that runs without model judgment. Cheap, reliable, and intentionally narrow.
 
-### Three categories
+Hooks block danger. They do not enforce taste. Overengineering is handled by specs, golden examples, anti-overeng review, adversarial review, and human review.
+
+### Four categories
 
 #### Stop-hook: run checks at task end
 
@@ -62,26 +66,35 @@ If broken, the hook surfaces it. The agent then knows to fix before claiming don
 
 Definition: see [`hooks/stop-hook-checks.sh`](./hooks/stop-hook-checks.sh).
 
-#### Pre-commit safety: block dangerous git
+#### Dangerous-command guard: block irreversible actions
 
-Block (require explicit confirmation for):
+Block or require explicit confirmation for:
 
-- `git push --force` to any branch
 - `git reset --hard`
 - `git clean -fd`
 - `git branch -D`
 - `git checkout .` / `git restore .` for many files
-- Commit messages with `--no-verify`
+- `git push --force`
+- `--no-verify`
+- database reset/drop/truncate commands
+- write SQL against shared databases
+- `gh pr merge`, `gh pr close`, `gh issue close`
 
-Definition: see [`hooks/pre-commit-safety.sh`](./hooks/pre-commit-safety.sh).
+Definition: see [`hooks/block-dangerous-commands.sh`](./hooks/block-dangerous-commands.sh).
 
-There's a published skill for this — `git-guardrails-claude-code` — recommended over rolling your own.
+Tune this per repo. A throwaway local database can allow more than a production-connected project. The important invariant is that agents do not run destructive or externally visible operations by accident.
 
 #### Pre-tool: confirm irrecoverable actions
 
 Hook on `gh pr merge`, `gh pr close`, `gh issue close` to require user confirmation before running.
 
 This is belt-and-suspenders alongside CLAUDE.md's "ask before irrecoverable actions" rule.
+
+#### Status / notification hooks
+
+Optional hooks can show context usage, cost, or notify you when an agent stops. Keep these personal and lightweight. They are useful for operator awareness, not required for the playbook contract.
+
+Hooks may append raw event logs for later diagnosis, but the playbook's success metrics do not depend on raw hook logs. The durable contract is the `/work` report sidecar.
 
 ### Hook anti-patterns
 
@@ -98,6 +111,8 @@ Slash commands that bundle a workflow. Loaded on demand.
 
 | Skill | What it does |
 |---|---|
+| `/linearize` | Turn an idea into a Linear Project-as-PRD and approved issue queue |
+| `/work` | Execute one scoped implementation slice end-to-end with full ceremony |
 | `/plan` | Invoke planner subagent against current spec |
 | `/implement` | Run implementation phase (after plan approved) |
 | `/review` | Run anti-overeng reviewer on current diff |
@@ -108,6 +123,19 @@ Slash commands that bundle a workflow. Loaded on demand.
 | `/spec` | Open per-task spec template, prefilled |
 
 Definitions in [`skills/`](./skills/).
+
+`/work` is the operational core. It authorizes branch, commit, push, and Ready PR after gates pass. The other skills remain composable building blocks when you want to run a phase manually.
+
+### Skill source of truth
+
+Keep user-level skills in one source directory, then expose them to each agent runtime with symlinks or explicit installation. On this machine, the durable pattern is:
+
+```text
+~/.agents/skills        # source of truth
+~/.claude/skills        # symlinks into ~/.agents/skills
+```
+
+Avoid duplicate copies. Duplicates drift, and agents end up following stale workflow text.
 
 ### Skill design rules
 
@@ -129,6 +157,60 @@ Install on Monday alongside everything else:
 | `psql` / DB CLI | Schema introspection | For agents to verify migrations |
 
 Each gets a CLAUDE.md mention so the agent knows it's available and prefers it over MCP equivalents.
+
+## Metrics and telemetry
+
+V1 metrics are local files, not a dashboard.
+
+Every `/work` slice writes:
+
+```text
+.reports/<work-id>.metrics.json
+```
+
+Then [`scripts/summarize-work-metrics.sh`](./scripts/summarize-work-metrics.sh) turns those sidecars into a weekly markdown readout. This keeps the truth source close to the work: spec coverage, gates, QA evidence, review findings, waivers, commit, and PR.
+
+### Runtime telemetry stance
+
+Claude Code has first-class OpenTelemetry support for operational data such as sessions, cost, tokens, tool decisions, skill activation, hook execution, commits, and PRs. Use it as optional enrichment. Safe default: enable metrics/events only, and do not enable prompt, tool-content, or raw API body logging unless you intentionally want that data exported.
+
+Codex App does not currently have an equivalent public OpenTelemetry-style contract in the official docs. Treat local Codex session JSONL and hook data as best-effort diagnostics. Do not make success metrics depend on those formats.
+
+The split is intentional:
+
+- **Outcome truth**: `/work` metrics sidecars + GitHub/Linear state.
+- **Operational detail**: Claude OTel, Codex session logs, hooks, status lines.
+- **Human judgment**: explicit review findings, labels, and waivers.
+
+## Question tool
+
+When an agent needs user input, it must use the question tool if the environment provides one. This applies to clarifications, tradeoffs, confirmations, destructive-action approvals, and scope decisions.
+
+Plain prose is fine for status updates. Decisions should be structured and captured.
+
+If no question tool exists, ask directly and record the answer in the spec, plan, issue, or report before proceeding.
+
+## Local settings
+
+Use settings files to encode capability and safety, not product taste.
+
+Good candidates:
+
+- Default reasoning/model preference
+- Trusted project roots
+- Enabled plugins/connectors
+- PreToolUse dangerous-command hooks
+- Statusline or notification hooks
+- Project-specific command denies, such as blocking known-bad test invocations
+
+Bad candidates:
+
+- Long product context
+- Temporary implementation plans
+- Generic coding style that belongs in repo instructions
+- Overengineering taste rules that need human/context judgment
+
+Settings are examples, not a portable bundle. Copy the pattern, not the whole machine.
 
 ## When to add an MCP server
 
@@ -172,6 +254,7 @@ Memory ≠ docs. Memory is *what doesn't fit in repos*.
 Resist:
 
 - A custom dashboard for agent status (a markdown file is enough)
+- A telemetry collector before local metrics prove useful
 - A custom CLI wrapping `gh` (use `gh` directly)
 - A "framework" for skills (skills are markdown; YAGNI)
 - A bespoke MCP server before exhausting CLIs

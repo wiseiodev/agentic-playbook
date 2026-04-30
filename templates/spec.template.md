@@ -18,8 +18,10 @@
 
 ## Behavior (Given/When/Then)
 
-- **Given** <state>, **when** <action>, **then** <observable outcome>
-- **Given** <state>, **when** <action>, **then** <observable outcome>
+- **Scenario: <short behavior name>**
+  **Given** <state>, **when** <action>, **then** <observable outcome>
+- **Scenario: <short behavior name>**
+  **Given** <state>, **when** <action>, **then** <observable outcome>
 
 ## Examples
 
@@ -48,7 +50,7 @@
 
 ## Done when
 
-- [ ] All Given/When/Then green
+- [ ] Every Given/When/Then scenario is verified by a test or QA evidence
 - [ ] `pnpm checks` passes
 - [ ] No new files outside the list above
 - [ ] Anti-overeng review subagent: no flags

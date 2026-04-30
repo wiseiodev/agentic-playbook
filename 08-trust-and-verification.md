@@ -7,11 +7,13 @@ Trust the agent enough to run autonomously through the gates; verify enough that
 Each level requires the level below to be sound.
 
 ```
-L4 — Merge to main           ← human approval (you, gate 4)
-L3 — Anti-overeng review     ← reviewer subagent (gate 3)
-L2 — Self-QA (checks green)  ← mechanical (gate 2)
-L1 — Plan approved           ← human approval (you, gate 1)
-L0 — Spec locked             ← human + decomposer
+L6 — Merge to main                    ← human approval
+L5 — Ready PR                         ← agent output, human reviews
+L4 — Report + adversarial review      ← audit trail + correctness/design review
+L3 — Anti-overeng review              ← simplicity review
+L2 — Self-QA (checks + evidence)      ← mechanical/observable proof
+L1 — Plan approved                    ← human approval
+L0 — Spec locked                      ← Given/When/Then + scope + constraints
 ```
 
 **Don't skip levels to go faster.** Each level catches a different class of failure. Skipping a level pushes that failure class into the next level (or production).
@@ -24,7 +26,9 @@ L0 — Spec locked             ← human + decomposer
 | L1 plan | Wrong direction, premature abstraction, files-out-of-scope | Mistakes in actual code |
 | L2 self-QA | Type errors, lint, broken tests, runtime crashes (in tests) | Behavior not covered by tests; subtle correctness; UX issues |
 | L3 anti-overeng | Premature abstraction, defensive code, scope creep in code | Subtle bugs, design flaws, missed requirements |
-| L4 human | Anything the prior gates missed | Whatever escapes your eye |
+| L4 adversarial/report | Correctness, security, design misses, weak evidence | Whatever reviewers didn't inspect |
+| L5 Ready PR | Forces a coherent handoff | Human judgment |
+| L6 human | Anything the prior gates missed | Whatever escapes your eye |
 
 A single failure mode (say, premature abstraction) gets multiple shots at being caught: spec constraints prevent it, plan-gate catches the planned ones, anti-overeng review catches the slipped ones, you catch the residue.
 
@@ -84,8 +88,8 @@ Agent should run **recoverable** actions freely:
 
 - Edit local files
 - Run tests
-- Make commits in a feature branch
-- Open PRs (they don't ship anything)
+- Make commits in a feature branch when `/work` or the user explicitly authorized the work run
+- Open Ready PRs when `/work` or the user explicitly authorized PR creation
 - Run read-only CLI calls (`gh pr list`, `gh issue view`)
 
 Agent must **ask before** running irrecoverable actions:
@@ -99,7 +103,7 @@ Agent must **ask before** running irrecoverable actions:
 
 Default in CLAUDE.md:
 
-> Never run irrecoverable or externally-visible actions without confirmation. Recoverable, local actions are free.
+> Never run irrecoverable or externally-visible actions without confirmation. `/work` is confirmation for branch, commit, push, and Ready PR only. Recoverable, local actions are free.
 
 ## Observability — what to log
 
@@ -128,6 +132,7 @@ Recurring failures of the same shape = system flaw, not agent flaw. Update the c
 |---|---|
 | Skipping plan gate ("agent knows what to do") | Overeng reaches diff; review burden up |
 | Skipping anti-overeng review | Constraints become aspirational, not enforced |
+| Agent self-waiving `/work` gates | Trust erodes because the contract stops meaning anything |
 | Auto-merging passing PRs | Gate 4 was your only chance to catch what subagents missed |
 | Letting agent --no-verify | Hooks exist for reasons; bypass = invisible debt |
 | "It's a small change, skip the gates" | Small changes that break are still broken |

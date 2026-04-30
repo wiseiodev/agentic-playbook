@@ -26,7 +26,7 @@ Create or open a per-task spec from the canonical template.
 
 - **Intent** — user authors
 - **In scope / Out of scope** — user authors
-- **Behavior (BDD)** — user authors
+- **Behavior (Given/When/Then)** — user authors
 - **Examples** — user authors
 - **Files to touch** — user authors (planner refines later)
 

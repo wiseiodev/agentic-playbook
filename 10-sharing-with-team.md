@@ -35,8 +35,10 @@ What to write down:
 Don't yet:
 
 - Polish for outsiders
-- Add metrics / dashboards
+- Add dashboards
 - Codify rules that haven't been tested
+
+Do collect the local `/work` metrics sidecars. They are part of the audit trail, not a team process rollout.
 
 ## Stage 2: Hire #1 — pair-mode onboarding (~2 weeks)
 
@@ -104,7 +106,7 @@ Goal: the playbook is institutional knowledge, not your personal habit.
 - **Owners** — each section of the playbook has an owner (you, by default, until delegated)
 - **Change process** — playbook PRs need 1+ reviewer; large changes need team discussion
 - **Retros** — monthly team retro on "what failure shape should we add to the constraints list"
-- **Metrics (lightweight)** — track rework rate (PRs reverted within 2 weeks / PRs merged); flag if >5%
+- **Metrics (lightweight)** — summarize `/work` sidecars weekly, then enrich with PR review/revert/follow-up state; flag if rework exceeds capacity or waivers become routine
 
 Don't add:
 
@@ -174,3 +176,4 @@ If you can name a recent example, keep the rule. If you can't, drop it.
 | Freeze the playbook | Drift between codebase and rules; team stops trusting it |
 | Add gates without dropping any | Process bloat; gates become rituals |
 | Measure adoption instead of outcomes | Compliance theater; no real productivity gain |
+| Infer quality from agent logs | Runtime activity looks productive even when the PR caused rework |

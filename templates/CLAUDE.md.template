@@ -24,17 +24,23 @@ pnpm build          # production build
 ## Workflow
 
 This project follows the **agentic-engineering playbook**.
-For any non-trivial slice, follow the loop in `agentic-playbook/06-workflow-loop.md`:
+For agent-owned implementation, use `/work` as the default loop in `agentic-playbook/06-workflow-loop.md`.
 
-1. Per-task spec (BDD + constraints + examples) — see `templates/spec.template.md`
+`/work` authorizes a scoped branch, implementation, gates, self-QA evidence, reviews, report, metrics sidecar, commit, push, and a Ready PR after all required gates pass. It does not authorize merging, force-pushing, closing issues, bypassing hooks, or destructive database/infrastructure commands.
+
+For manual phase control, use the lower-level loop:
+
+1. Per-task spec (Given/When/Then + constraints + examples) — see `templates/spec.template.md`
 2. Plan-first (use `/plan`) — wait for human approval before code
 3. Implement
 4. Self-QA: `pnpm checks`
 5. Anti-overengineering review: `/review`
 6. PR body via `/pr`
 
-Skills available: `/plan`, `/implement`, `/review`, `/decompose`, `/spec`, `/worktree`, `/cleanup-worktree`.
+Skills available: `/linearize`, `/work`, `/plan`, `/implement`, `/review`, `/decompose`, `/spec`, `/worktree`, `/cleanup-worktree`.
 Subagents available: `planner`, `anti-overeng-reviewer`, `decomposer`, `pr-author`.
+
+When you need user input, use the question tool if available. Do not ask for decisions in plain prose when a structured question tool exists.
 
 ## Canonical patterns
 
@@ -131,10 +137,13 @@ The agent must ask before:
 
 Recoverable, local actions are free.
 
+Exception: invoking `/work` is explicit authorization for branch, commit, push, and Ready PR after gates pass. It is not authorization for merge, force-push, issue closure, hook bypass, or destructive database/infrastructure actions.
+
 ## Commits
 
 - Conventional commit format always: `feat(scope): subject`, `fix(scope): subject`, etc.
 - NEVER stage files (`git add`) or commit unless explicitly asked.
+- Exception: `/work` is an explicit ask to stage the scoped diff and create one commit after gates, QA evidence, reviews, report, and `.reports/<work-id>.metrics.json` are complete.
 - Don't even offer; wait for the ask.
 - Never use `--no-verify`.
 
