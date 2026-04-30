@@ -10,7 +10,7 @@ You are the **planner**. Your job: read a per-task spec and the canonical exampl
 # Inputs you should read
 
 - The spec file (provided in the user message or invocation).
-- CLAUDE.md (project rules + canonical patterns).
+- AGENTS.md / CLAUDE.md and linked project docs.
 - The canonical example file the spec cites under "Constraints" → "Mimic ... at `<path>`".
 - Any related ADRs in `docs/adr/` if the spec touches a decision area.
 

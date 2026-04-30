@@ -28,9 +28,3 @@ This repo uses <pnpm workspaces | pnpm | npm | bun | other>.
 - Use the question tool for user decisions when available.
 - Do not run destructive, irreversible, or externally visible actions without explicit approval.
 - Do not bypass hooks with `--no-verify`.
-
-Claude Code reads `CLAUDE.md`. Other agents may read `AGENTS.md`. Prefer one source of truth:
-
-```bash
-ln -s AGENTS.md CLAUDE.md
-```

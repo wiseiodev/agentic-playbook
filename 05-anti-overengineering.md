@@ -1,7 +1,7 @@
 # 05 — Anti-Overengineering
 
 Your top failure modes: **premature abstraction** and **defensive code**.
-Both are avoidable upstream. This doc gives you the canonical constraints list (drop into CLAUDE.md) and the anti-overengineering review subagent.
+Both are avoidable upstream. This doc gives you the canonical constraints list for progressive-disclosure agent docs and the anti-overengineering review subagent.
 
 ## Why high-thinking models overengineer
 
@@ -17,9 +17,9 @@ The model isn't wrong — these are *plausible* future needs. They're just not *
 
 The cure: tell the model what NOT to do, with examples, and gate the diff.
 
-## Canonical constraints list (drop into CLAUDE.md)
+## Canonical constraints list
 
-Copy this verbatim into the root CLAUDE.md `## Constraints` section. Tune over time.
+Copy this into `docs/agent/ANTI_OVERENGINEERING.md` and link to it from the root `AGENTS.md` / `CLAUDE.md`. Tune over time.
 
 ```markdown
 ## Constraints
@@ -166,7 +166,7 @@ async function findUserById(id: string) {
 }
 ```
 
-These exact examples can go into a "do/don't" appendix linked from CLAUDE.md.
+These exact examples can go into a "do/don't" appendix linked from `docs/agent/ANTI_OVERENGINEERING.md`.
 
 ## Calibration: when to update the constraints
 

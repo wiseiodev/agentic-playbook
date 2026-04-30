@@ -100,7 +100,7 @@ You don't write the spec from scratch. The agent does.
 The agent drafting the spec is fine because:
 - The format is structured
 - You edit the slots that matter (behavior, out-of-scope, constraints)
-- The decomposer subagent has CLAUDE.md context
+- The decomposer subagent has AGENTS.md / CLAUDE.md context
 
 See [`subagents/decomposer.md`](./subagents/decomposer.md) for the subagent definition.
 
@@ -119,7 +119,7 @@ If the spec is <30 lines, the slice is either trivial or under-specified. Either
 
 ## Constraint inheritance
 
-Don't repeat global constraints (no defensive code, no premature abstraction) in every spec — they're in CLAUDE.md.
+Don't repeat global constraints (no defensive code, no premature abstraction) in every spec — they're in `docs/agent/ANTI_OVERENGINEERING.md`, linked from AGENTS.md / CLAUDE.md.
 The spec's Constraints section adds **task-specific** bans:
 
 - "Do not add a database migration; we're using existing schema only."
@@ -167,7 +167,7 @@ If no question tool exists, ask directly and record the answer in the spec befor
 
 Treat the template like code. When a class of failure happens twice:
 
-1. Add a constraint to the global list (CLAUDE.md)
+1. Add a constraint to the relevant progressive-disclosure doc
 2. Or add a slot to the spec template
 
 Example: if agents keep adding `console.log` debug statements, add to template:

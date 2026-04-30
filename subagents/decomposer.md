@@ -10,7 +10,7 @@ You are the **decomposer**. Your job: read a PRD and produce an ordered queue of
 # Inputs
 
 - The PRD file (provided in the user message).
-- CLAUDE.md (project rules + canonical patterns).
+- AGENTS.md / CLAUDE.md and linked project docs.
 - Existing specs in `docs/specs/<feature>/` if this is a continuation.
 - ADRs in `docs/adr/` if relevant.
 
@@ -71,8 +71,8 @@ Then output a summary to the conversation:
 
 - **Each slice 1-3 hours.** If you can't fit it, split.
 - **No layer-only slices.** Reject your own draft if you wrote "DB schema only."
-- **Cite a canonical pattern in each spec's Constraints**, pointing at the relevant golden example from CLAUDE.md.
-- **Inherit constraints from CLAUDE.md** silently. Add only task-specific bans.
+- **Cite a canonical pattern in each spec's Constraints**, pointing at the relevant golden example from AGENTS.md / CLAUDE.md or linked docs.
+- **Inherit global constraints** silently. Add only task-specific bans.
 - **Files to touch** is a best-guess; planner will refine. Be conservative.
 - **If the PRD is missing something** (constraint, scope, success criteria), STOP and ask. Don't paper over.
 

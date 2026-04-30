@@ -16,11 +16,12 @@ Your day-1 setup. Roughly 4 hours of human time. Pays back within the first week
 - [ ] `mkdir docs/adr/` — ADR home
 - [ ] Empty src/ skeleton matching your stack's idiom
 
-### 2. Drop in CLAUDE.md (~20 min)
-- [ ] Copy `templates/CLAUDE.md.template` → `/CLAUDE.md`
-- [ ] Fill stack section (which framework, which db, which test runner, which deploy)
-- [ ] Fill commands section (`pnpm checks`, `pnpm dev`, etc.)
-- [ ] Leave Constraints section as-is (canonical anti-overeng list)
+### 2. Drop in AGENTS.md / CLAUDE.md (~20 min)
+- [ ] Copy `templates/agent-docs/AGENTS.md` → `/AGENTS.md`
+- [ ] Symlink `CLAUDE.md` to `AGENTS.md`, or copy the same content if symlinks are awkward
+- [ ] Fill the one-sentence project description
+- [ ] Fill only package manager and non-standard command names
+- [ ] Copy `templates/agent-docs/docs/agent/` → `docs/agent/`
 
 ### 3. Set up quality gates (~30-45 min)
 - [ ] Run `/setup-quality` or follow [13-quality-gates](./13-quality-gates.md)
@@ -45,7 +46,7 @@ Pick the simplest representative slice (e.g., one CRUD entity end-to-end).
 - [ ] Write spec yourself first (use spec template)
 - [ ] Write code yourself or with very tight AI assist (you drive every choice)
 - [ ] Tests + types + lint passing
-- [ ] Add to CLAUDE.md: "Canonical pattern: src/features/<X>. Mimic for new features."
+- [ ] Add to `docs/agent/ARCHITECTURE.md`: "Canonical pattern: src/features/<X>. Mimic for new features."
 
 ## Monday PM (2-3 hours)
 
@@ -63,7 +64,7 @@ Pick a simple #3 feature. **Hand it to an agent**, follow the workflow loop end-
 - [ ] PR
 - [ ] You review → merge
 
-This is your first calibration loop. Note where the agent overengineered or missed intent. Tighten the spec template or CLAUDE.md based on what you saw.
+This is your first calibration loop. Note where the agent overengineered or missed intent. Tighten the spec template or the smallest relevant `docs/agent/` file based on what you saw.
 
 ## Tuesday and beyond
 
@@ -77,7 +78,7 @@ If you see these, **stop and tighten** before scaling parallelism:
 
 - 🚩 Agent adds an interface/factory/abstract class for a single caller → tighten spec + add to constraints
 - 🚩 Agent wraps every external call in try/catch → strengthen "no defensive code" rule
-- 🚩 Agent invents a new pattern instead of mimicking existing → CLAUDE.md pointer to canonical isn't strong enough
+- 🚩 Agent invents a new pattern instead of mimicking existing → canonical pointer in `docs/agent/ARCHITECTURE.md` isn't strong enough
 - 🚩 Plan looks good but impl drifts → add "implementer must follow the approved plan; deviations require asking" to spec template
 - 🚩 You're rewriting more than reviewing → slices are too big OR specs are too loose
 

@@ -17,7 +17,7 @@ Walk the user through hand-shaping a reference feature. The agent acts as a **ty
 ## Steps
 
 0. Confirm quality gates exist:
-   - Canonical quality command is in CLAUDE.md or repo instructions.
+   - Canonical quality command is in AGENTS.md / CLAUDE.md or repo instructions.
    - Formatter/linter, typecheck, tests, and build are wired.
    - For Node/TypeScript repos, `/setup-quality` has handled Biome, Vitest, package scripts, CI, and optional Commitlint/Lefthook.
 1. Ask the user:
@@ -39,7 +39,7 @@ Walk the user through hand-shaping a reference feature. The agent acts as a **ty
    ```
 4. Add a corresponding test file. Test behavior, not implementation.
 5. Run the repo's canonical quality command to confirm it's clean.
-6. Update CLAUDE.md's "Canonical patterns" section:
+6. Update `docs/agent/ARCHITECTURE.md` or the repo's canonical-pattern doc:
    ```markdown
    - **<shape> features**: `<path>`
    ```
@@ -51,12 +51,12 @@ Walk the user through hand-shaping a reference feature. The agent acts as a **ty
 - **No abstractions, period.** Even "obvious" helpers — inline them.
 - **No defensive code.** Errors propagate to the boundary.
 - **No comments explaining what code does.** Names do that.
-- **Header comment + CLAUDE.md pointer**, both. Belt + suspenders.
+- **Header comment + agent-doc pointer**, both. Belt + suspenders.
 
 ## After bootstrapping 2-3 features
 
 - Recommend the user run a first agent slice (a 4th feature, agent-led) and observe whether it mimics the canonicals.
-- If it doesn't, the canonicals or CLAUDE.md pointers need strengthening.
+- If it doesn't, the canonicals or agent-doc pointers need strengthening.
 
 ## Anti-patterns to avoid
 

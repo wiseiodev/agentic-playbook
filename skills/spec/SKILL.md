@@ -19,7 +19,7 @@ Create or open a per-task spec from the canonical template.
    - Target file path (default: `docs/specs/<feature>/<NN>-<slug>.md`)
 2. Copy `agentic-playbook/templates/spec.template.md` to the target path.
 3. Prefill known sections from context:
-   - **Constraints**: include the canonical pattern pointer extracted from CLAUDE.md if known.
+   - **Constraints**: include the canonical pattern pointer extracted from AGENTS.md / CLAUDE.md or linked docs if known.
 4. Open the file for the user to edit.
 
 ## What to leave empty

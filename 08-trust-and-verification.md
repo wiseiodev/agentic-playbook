@@ -42,7 +42,7 @@ pnpm checks   # canonical: lint + types + tests + format
 
 Project-specific equivalents: `pnpm check`, `npm run validate`, `cargo check && cargo test`, `make ci`.
 
-**Add to CLAUDE.md the exact command** so every agent uses the same one. For Node/TypeScript repos, use [13-quality-gates](./13-quality-gates.md) and `/setup-quality` to converge on the preferred Biome, Vitest, Commitlint, Lefthook, pnpm, and CI shape.
+**Add the exact command to root AGENTS.md / CLAUDE.md** so every agent uses the same one. For Node/TypeScript repos, use [13-quality-gates](./13-quality-gates.md) and `/setup-quality` to converge on the preferred Biome, Vitest, Commitlint, Lefthook, pnpm, and CI shape.
 
 For UI changes, add:
 - Open in browser via Playwright
@@ -58,7 +58,7 @@ You will sometimes ship something bad. The playbook minimizes the cost of recove
 
 - **Small slices** = small reverts. `gh pr revert <PR>` undoes one tracer bullet, not a feature.
 - **Worktrees** = isolated state. Delete the worktree, reset the slice.
-- **No force-push to main** (CLAUDE.md rule). History stays linear.
+- **No force-push to main** (agent-doc rule). History stays linear.
 - **No --no-verify**. Hooks ran for a reason; if they fail, fix the cause.
 - **Conventional commits** = readable history. `git revert <sha>` with a clean message.
 
@@ -101,7 +101,7 @@ Agent must **ask before** running irrecoverable actions:
 - Posting to Slack / GitHub / external systems
 - Deleting branches / worktrees / files outside the slice
 
-Default in CLAUDE.md:
+Default in root AGENTS.md / CLAUDE.md:
 
 > Never run irrecoverable or externally-visible actions without confirmation. `/work` is confirmation for branch, commit, push, and Ready PR only. Recoverable, local actions are free.
 
@@ -112,7 +112,7 @@ Even with gates, you'll want to introspect. Useful surfaces:
 - **PR descriptions** = the agent's own summary. If they're consistently inaccurate, gate 4 catches drift.
 - **Plan files** kept in the spec directory = audit trail of what was approved.
 - **Reviewer subagent output** kept as PR comment = record of flags caught.
-- **CLAUDE.md changelog** when you tighten constraints = pattern of failures over time.
+- **Agent-doc changelog** when you tighten constraints = pattern of failures over time.
 
 Don't build dashboards. The above is enough for solo. When team scales, see [10-sharing-with-team](./10-sharing-with-team.md).
 

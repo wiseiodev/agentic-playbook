@@ -29,7 +29,7 @@ What to write down:
 
 - Update `05-anti-overengineering.md` with new failure modes you saw
 - Update `02-spec-format.md` if you added/removed slots
-- Update CLAUDE.md template with rules that proved out
+- Update AGENTS/CLAUDE templates with rules that proved out
 - Note in `STATUS.md` or a journal: "this week's biggest learning"
 
 Don't yet:
@@ -76,7 +76,7 @@ Goal: a standard the team follows by default, not because you enforce it.
 - You stop being the only reviewer at gate 4. Other engineers review each other's PRs.
 - Subagents are configured at the project level (`.claude/agents/`), checked in.
 - Hooks are checked in.
-- CLAUDE.md is checked in.
+- AGENTS.md is checked in, with CLAUDE.md symlinked or copied for Claude Code.
 
 ### What stays the same
 
@@ -95,7 +95,7 @@ Mitigate:
 
 - Monthly playbook retro (15 min) — what's still working, what's drifting
 - Pair on the first slice in any new shape (auth, billing, AI flow) so the canonical pattern is shared
-- Pair-review of CLAUDE.md changes before merge
+- Pair-review of root AGENTS.md / CLAUDE.md changes before merge
 
 ## Stage 4: Team of 4+ — documented + governed
 
@@ -126,13 +126,13 @@ Copy `agentic-playbook/` into each repo. Each repo evolves its own copy.
 - Con: drift between repos; updates don't propagate
 
 ### Option B: company-shared
-Single `agentic-playbook/` repo, referenced by each project's `CLAUDE.md` ("read X for our standards").
+Single `agentic-playbook/` repo, referenced by each project's `AGENTS.md` / `CLAUDE.md` ("read X for our standards").
 - Pro: one source of truth, updates propagate
 - Con: changes need coordination; project specifics live elsewhere
 
 **Recommended: hybrid.**
 - Shared playbook repo for principles, templates, subagents, skills, hooks
-- Per-project CLAUDE.md for stack/commands/glossary/canonicals
+- Per-project AGENTS.md for package manager, commands, and links to progressive-disclosure docs
 - Per-project ADRs for project decisions
 
 ## Communicating the *why*

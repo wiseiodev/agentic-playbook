@@ -151,7 +151,7 @@ Hard rules:
 - Prefer the repo's existing script names when they are already working.
 - Add missing gates in the smallest conventional shape.
 - Use the question tool for ambiguous choices, especially adding Commitlint/Lefthook or E2E.
-- Record the canonical command in `CLAUDE.md` or the repo instruction file.
+- Record the canonical command in root `AGENTS.md` / `CLAUDE.md` or the repo instruction file.
 - Run the non-writing verification path before claiming done.
 
 Quality gates are not taste enforcement. They make the mechanical path obvious so `/work` can spend human attention on scope, behavior, evidence, and overengineering.

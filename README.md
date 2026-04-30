@@ -9,11 +9,11 @@ This starts as a personal workflow. Team sharing comes later, after the rules ha
 ## Read order
 
 1. [00-philosophy](./00-philosophy.md) — trust, bounded autonomy, and the five laws
-2. [01-context-engineering](./01-context-engineering.md) — layered context: CLAUDE.md, ADRs, golden examples
+2. [01-context-engineering](./01-context-engineering.md) — layered context: AGENTS.md/CLAUDE.md, ADRs, golden examples
 3. [02-spec-format](./02-spec-format.md) — Given/When/Then + constraints + examples
 4. [03-task-decomposition](./03-task-decomposition.md) — tracer bullets, 1-3hr slices
 5. [04-greenfield-bootstrap](./04-greenfield-bootstrap.md) — hand-shape 2-3 reference features before agents take over
-6. [05-anti-overengineering](./05-anti-overengineering.md) — canonical constraints list, drop-in for CLAUDE.md
+6. [05-anti-overengineering](./05-anti-overengineering.md) — canonical constraints list, drop-in for progressive-disclosure agent docs
 7. [06-workflow-loop](./06-workflow-loop.md) — `/work` default, lower-level gates, review, merge
 8. [07-parallelization](./07-parallelization.md) — git worktrees, 2-3 concurrent slots, conflict mgmt
 9. [08-trust-and-verification](./08-trust-and-verification.md) — gates, self-QA, recoverability
@@ -25,7 +25,7 @@ This starts as a personal workflow. Team sharing comes later, after the rules ha
 
 ## Drop-in artifacts
 
-- [templates/](./templates/) — CLAUDE.md, spec, ADR, PRD, PR body, metrics, quality-gate snippets
+- [templates/](./templates/) — AGENTS/CLAUDE, progressive agent docs, spec, ADR, PRD, PR body, metrics, quality-gate snippets
 - [subagents/](./subagents/) — planner, anti-overeng-reviewer, decomposer, pr-author
 - [skills/](./skills/) — `/linearize`, `/work`, `/setup-quality`, `/plan`, `/implement`, `/review`, `/pr`, `/decompose`, `/bootstrap`, `/spec`, `/worktree`, `/cleanup-worktree`
 - [hooks/](./hooks/) — stop-hook checks, dangerous-command guard, pre-tool safety examples

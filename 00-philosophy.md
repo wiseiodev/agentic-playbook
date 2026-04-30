@@ -24,7 +24,7 @@ Premature abstraction and defensive code are *invited* by vague specs. Don't rev
 
 ### 2. Mimicry beats instruction
 
-Models follow examples in the repo more reliably than rules in CLAUDE.md.
+Models follow examples in the repo more reliably than rules in AGENTS.md / CLAUDE.md.
 Three concrete patterns set the precedent. Any new feature mimics them, not the model's training-data Java enterprise instincts.
 
 ### 3. Smaller slices, less surface

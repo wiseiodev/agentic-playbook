@@ -37,7 +37,7 @@
 
 ## Constraints
 
-<!-- Inherits global constraints from CLAUDE.md. Add task-specific bans here. -->
+<!-- Inherits global constraints from docs/agent/ANTI_OVERENGINEERING.md. Add task-specific bans here. -->
 
 - Mimic the canonical pattern at `<src/path/to/canonical>`.
 - Do not modify files outside the "Files to touch" list.

@@ -25,7 +25,7 @@ Spawn the **anti-overeng-reviewer** subagent against the current diff. Gate 3 of
    - The diff (it will run `git diff` itself)
    - The spec file path
    - The plan file path
-   - CLAUDE.md
+   - AGENTS.md / CLAUDE.md
 4. Read the reviewer's output.
 5. **If flags > 0**: address each flag. Usually means deleting code (inline, remove try/catch, remove abstraction). Re-run `/review` after fixes.
 6. **If flags = 0**: hand off to `/pr`.

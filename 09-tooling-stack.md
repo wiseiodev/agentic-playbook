@@ -88,7 +88,7 @@ Tune this per repo. A throwaway local database can allow more than a production-
 
 Hook on `gh pr merge`, `gh pr close`, `gh issue close` to require user confirmation before running.
 
-This is belt-and-suspenders alongside CLAUDE.md's "ask before irrecoverable actions" rule.
+This is belt-and-suspenders alongside AGENTS.md / CLAUDE.md's "ask before irrecoverable actions" rule.
 
 #### Status / notification hooks
 
@@ -145,7 +145,7 @@ Avoid duplicate copies. Duplicates drift, and agents end up following stale work
 
 - **Composable** — `/plan` should work whether or not you used `/spec` first
 - **Narrow scope** — one skill, one workflow phase
-- **Documented in CLAUDE.md** — point at the skill list so the agent (and you) know what's available
+- **Documented in AGENTS.md / CLAUDE.md** — point at the skill list so the agent (and you) know what's available
 - **Keyboard-accessible** — short names, no special chars
 
 ## CLIs the playbook depends on
@@ -160,7 +160,7 @@ Install on Monday alongside everything else:
 | `vercel` (if Vercel) | Deploy + logs | See `vercel-cli` skill |
 | `psql` / DB CLI | Schema introspection | For agents to verify migrations |
 
-Each gets a CLAUDE.md mention so the agent knows it's available and prefers it over MCP equivalents.
+Each gets an AGENTS.md / CLAUDE.md mention so the agent knows it's available and prefers it over MCP equivalents.
 
 ## Quality-gate stack
 
@@ -264,7 +264,7 @@ Claude Code's auto memory is on by default. Use it for:
 
 Don't use it for:
 
-- Project-specific state — that's CLAUDE.md / ADRs
+- Project-specific state — that's AGENTS.md / ADRs
 - In-flight work — that's tasks / plans
 - Code patterns — those live in golden examples
 

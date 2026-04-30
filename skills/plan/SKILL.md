@@ -16,10 +16,10 @@ Invoke the **planner** subagent against the current per-task spec to produce an 
 ## Steps
 
 1. Identify the spec file. Ask the user if ambiguous.
-2. Read the spec, CLAUDE.md, and the canonical example the spec cites.
+2. Read the spec, AGENTS.md / CLAUDE.md, and the canonical example the spec cites.
 3. Spawn the `planner` subagent with the spec path. Pass it:
    - The spec file path
-   - The CLAUDE.md path
+   - The AGENTS.md / CLAUDE.md path
    - The canonical example path (extracted from spec's Constraints)
 4. The planner produces a plan to stdout (or writes to `<spec>.plan.md`).
 5. **STOP.** Show the plan to the user. Do not proceed to implementation.

@@ -15,7 +15,7 @@ Implement the slice against the approved plan. The plan was gated; you follow it
 
 ## Steps
 
-1. Re-read the spec, the plan, the canonical example, and CLAUDE.md.
+1. Re-read the spec, the plan, the canonical example, and AGENTS.md / CLAUDE.md.
 2. Implement strictly to the plan:
    - Files in plan's "Files to add/modify" only.
    - Mimic the canonical pattern.

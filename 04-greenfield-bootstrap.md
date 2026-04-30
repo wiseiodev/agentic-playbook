@@ -4,10 +4,10 @@ Greenfield is where smart models overengineer the most — there's no existing c
 
 ## The hypothesis
 
-> Models follow examples in the repo more reliably than rules in CLAUDE.md.
+> Models follow examples in the repo more reliably than rules in AGENTS.md or CLAUDE.md.
 
 If the repo has 3 features all written as straight-line modules with no abstractions, the 4th feature will be written that way too.
-If the repo has 0 features and a CLAUDE.md saying "no abstractions," the model will add an abstraction.
+If the repo has 0 features and an instruction file saying "no abstractions," the model will add an abstraction.
 
 Examples beat rules. Therefore: **build the examples by hand, before agents see the codebase.**
 
@@ -38,7 +38,7 @@ For each reference feature:
 4. **No defensive code.** Errors propagate. Don't catch what you don't have a plan for.
 5. **Tight tests** that exercise behavior, not implementation.
 6. **Add a header comment** marking the file canonical.
-7. **Update CLAUDE.md** with a pointer.
+7. **Update `docs/agent/ARCHITECTURE.md`** with a pointer.
 
 ### Header comment pattern
 
@@ -50,7 +50,7 @@ For each reference feature:
  */
 ```
 
-### CLAUDE.md pointer pattern
+### Agent-doc pointer pattern
 
 ```markdown
 ## Canonical patterns
@@ -64,7 +64,7 @@ When adding a new feature, study the file matching its shape:
 Mimic structure, naming, error posture, and test layout. Do not invent new patterns.
 ```
 
-Both pointers (header + CLAUDE.md). Models miss either alone.
+Both pointers (header + linked agent doc). Models miss either alone.
 
 ## Constraints when hand-shaping
 
@@ -112,7 +112,7 @@ After 2-3 hand-shaped features, **hand a 4th feature to an agent** with the stan
 For each "yes" to a failure, **adjust upstream**:
 
 - Tighter constraint in the spec template
-- Stronger pointer in CLAUDE.md
+- Stronger pointer in `docs/agent/ARCHITECTURE.md`
 - Add the header comment if missing
 - Strengthen the anti-overeng review subagent's checklist
 
@@ -122,7 +122,7 @@ This is the agentic-engineering loop. The agent is a probe; the codebase + conte
 
 | Phase | Time | Output |
 |---|---|---|
-| Repo skeleton + CLAUDE.md + ADRs | ~1 hour | repo, root context |
+| Repo skeleton + AGENTS/CLAUDE + ADRs | ~1 hour | repo, root context |
 | Reference feature #1 | ~90 min | one canonical pattern |
 | Reference feature #2 | ~90 min | second pattern |
 | Reference feature #3 (optional) | ~90 min | third pattern |
@@ -140,4 +140,4 @@ Pays back within the first week of agentic work.
 | Write one canonical only | Model treats it as one-off, not a pattern |
 | Write 5+ canonicals before any real feature | Premature; you're guessing at shapes that haven't materialized |
 | Make canonicals too elaborate | Model mimics elaboration; defeats anti-overeng |
-| Forget the CLAUDE.md pointer | Canonicals exist but aren't surfaced; agent doesn't know to mimic |
+| Forget the agent-doc pointer | Canonicals exist but aren't surfaced; agent doesn't know to mimic |

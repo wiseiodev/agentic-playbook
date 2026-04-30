@@ -17,7 +17,7 @@ Spawn the **decomposer** subagent against a PRD to produce an ordered queue of s
 1. Identify the PRD path. Ask the user if ambiguous.
 2. Spawn the `decomposer` subagent with the PRD path.
 3. The decomposer:
-   - Reads the PRD, CLAUDE.md, ADRs.
+   - Reads the PRD, AGENTS.md / CLAUDE.md, ADRs.
    - Writes individual slice specs to `docs/specs/<feature>/<NN>-<slug>.md`.
    - Outputs a summary table to the conversation.
 4. Show the user the summary table + open questions.
