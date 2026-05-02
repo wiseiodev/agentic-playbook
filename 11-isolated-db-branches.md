@@ -67,11 +67,9 @@ When schema code lands on main:
 6. Run any hand-authored data migrations idempotently.
 7. Deploy only after migration success.
 
-The deploy step should be explicit for the hosting provider. In reusable templates, leave it as a placeholder. In a real repo, replace it with Vercel, Railway, Fly, AWS, or the actual production deploy command.
+The deploy step should be explicit for the hosting provider. In reusable templates, leave it as a placeholder. In the target repo, replace it with Vercel, Railway, Fly, AWS, or the actual production deploy command.
 
-## WiseIO Lessons
-
-The pattern above came from a real repo after a few manual fixes. Keep these in the reusable version:
+## Workflow Details
 
 - CI should install pnpm with `package_json_file: package.json`.
 - CI should verify `pnpm --version` matches `packageManager` before installing dependencies.
