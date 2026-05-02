@@ -1,4 +1,4 @@
-# 09 — Tooling Stack
+# 06 — Tooling Stack
 
 Agent-side primitives that make the workflow loop work. Defaults: **skills + subagents + hooks + CLIs**. MCP servers only when no CLI exists.
 
@@ -114,6 +114,7 @@ Slash commands that bundle a workflow. Loaded on demand.
 | `/linearize` | Turn an idea into a Linear Project-as-PRD and approved issue queue |
 | `/work` | Execute one scoped implementation slice end-to-end with full ceremony |
 | `/setup-quality` | Add or tighten preferred quality-gate tooling in a repo |
+| `/isolated-db-branches` | Add per-feature Neon DB branches for parallel Drizzle schema work |
 | `/plan` | Invoke planner subagent against current spec |
 | `/implement` | Run implementation phase (after plan approved) |
 | `/review` | Run anti-overeng reviewer on current diff |
@@ -124,11 +125,19 @@ Slash commands that bundle a workflow. Loaded on demand.
 | `/cleanup-worktree` | Remove merged worktree + branch |
 | `/spec` | Open per-task spec template, prefilled |
 
-Definitions in [`skills/`](./skills/).
+Definitions and install commands are in [`skills/`](./skills/) and [`skills/README.md`](./skills/README.md).
 
 `/work` is the operational core. It authorizes branch, commit, push, and Ready PR after gates pass. The other skills remain composable building blocks when you want to run a phase manually.
 
-`/setup-quality` is the tooling setup path. Use it during day-1 bootstrap or when a repo's gates are inconsistent. It inspects the repo before editing, then adapts the preferred Biome, Vitest, Commitlint, Lefthook, pnpm, Turbo, and CI patterns from [13-quality-gates](./13-quality-gates.md).
+`/setup-quality` is the tooling setup path. Use it during day-1 bootstrap or when a repo's gates are inconsistent. It inspects the repo before editing, then adapts the preferred Biome, Vitest, Commitlint, Lefthook, pnpm, Turbo, and CI patterns from [05-quality-gates](./05-quality-gates.md).
+
+`/isolated-db-branches` is the database isolation path for Drizzle + Neon repos where parallel branches would otherwise fight over generated migration files. See [11-isolated-db-branches](./11-isolated-db-branches.md).
+
+Install a skill with:
+
+```bash
+npx skills add wiseiodev/agentic-playbook/skills/<skill>
+```
 
 ### Skill source of truth
 
@@ -175,7 +184,7 @@ For Node/TypeScript projects, the preferred local stack is:
 - Lefthook for pre-commit, commit-msg, and pre-push checks
 - GitHub Actions that verify the pinned pnpm version before installing
 
-The templates live in [`templates/quality/`](./templates/quality/), and the full guidance lives in [13-quality-gates](./13-quality-gates.md).
+The templates live in [`templates/quality/`](./templates/quality/), and the full guidance lives in [05-quality-gates](./05-quality-gates.md).
 
 Keep this repo-adaptive. A Rust, Python, or Bun repo should still expose one obvious quality command, but it should use its own formatter, typechecker, test runner, and package manager.
 

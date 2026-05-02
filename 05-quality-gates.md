@@ -1,4 +1,4 @@
-# 13 - Quality Gates
+# 05 — Quality Gates
 
 The preferred quality stack is boring on purpose: pinned Node and pnpm, Biome, Vitest, Turbo when the repo is a monorepo, Commitlint for issue-linked history, Lefthook for local muscle memory, and CI that proves it is using the same package-manager version as the repo.
 

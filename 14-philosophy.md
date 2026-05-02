@@ -1,4 +1,4 @@
-# 00 — Philosophy
+# 14 — Philosophy
 
 This playbook is a personal operating system first. It is not trying to be a generic public framework on day one. It exists to let you trust strong models with real implementation work without spending the rest of the day cleaning up cleverness.
 

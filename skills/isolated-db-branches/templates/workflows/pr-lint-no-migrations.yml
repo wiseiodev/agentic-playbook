@@ -1,0 +1,29 @@
+name: pr-lint-no-migrations
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  lint-migrations:
+    if: "${{ !contains(github.event.pull_request.labels.*.name, 'automated-migration') }}"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Check for generated migration files
+        run: |
+          ADDED=$(git diff --name-only --diff-filter=A origin/main...HEAD \
+            | grep '^<migrations-dir>/' \
+            | grep -v '^<data-migrations-dir>/' || true)
+
+          if [ -n "$ADDED" ]; then
+            echo "::error::Migration files should not be committed on feature branches."
+            echo "::error::Delete these files and use db:push against the isolated branch database."
+            echo "$ADDED"
+            exit 1
+          fi

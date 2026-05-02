@@ -1,0 +1,62 @@
+name: db-migrate-and-deploy
+
+on:
+  pull_request:
+    types: [closed]
+
+permissions:
+  contents: read
+  issues: write
+  statuses: write
+
+jobs:
+  migrate-and-deploy:
+    if: github.event.pull_request.merged == true && contains(github.event.pull_request.labels.*.name, 'migration-ready')
+    runs-on: ubuntu-latest
+    env:
+      NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
+      NEON_PROJECT_ID: ${{ secrets.NEON_PROJECT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          package_json_file: package.json
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: npm i -g neonctl
+      - name: Get production connection string
+        id: prod
+        run: |
+          URL=$(neonctl connection-string "${NEON_PARENT_BRANCH:-production}" --project-id "$NEON_PROJECT_ID" --api-key "$NEON_API_KEY")
+          echo "database_url=$URL" >> "$GITHUB_OUTPUT"
+      - name: Apply migration to production
+        env:
+          DATABASE_URL: ${{ steps.prod.outputs.database_url }}
+        run: |
+          for attempt in 1 2 3; do
+            pnpm db:migrate && exit 0
+            sleep 10
+          done
+          exit 1
+      - name: Set migration status success
+        if: success()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh api repos/${{ github.repository }}/statuses/${{ github.event.pull_request.merge_commit_sha }} -f state=success -f context=prod-migration-state -f description="Migration applied successfully"
+      - name: Deploy to production
+        run: echo "Replace this with the repo's production deploy command."
+      - name: Set migration status failure
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh api repos/${{ github.repository }}/statuses/${{ github.event.pull_request.merge_commit_sha }} -f state=failure -f context=prod-migration-state -f description="Migration failed; see workflow run"
+      - name: Open failure issue
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh label create migration-failed --color e11d48 2>/dev/null || true
+          gh issue create --title "Migration failed: ${{ github.event.pull_request.title }}" --label migration-failed --body "Migration failed during deployment. Workflow run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"

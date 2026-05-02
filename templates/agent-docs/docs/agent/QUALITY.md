@@ -13,7 +13,7 @@ Use this file for package manager, scripts, CI, and local hook guidance.
 
 ## Preferred Node/TypeScript Setup
 
-If this repo is Node/TypeScript, follow `agentic-playbook/13-quality-gates.md`:
+If this repo is Node/TypeScript, follow `agentic-playbook/05-quality-gates.md`:
 
 - Pin Node in `.nvmrc`.
 - Pin pnpm in `packageManager`.

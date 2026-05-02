@@ -12,7 +12,7 @@ Walk the user through hand-shaping a reference feature. The agent acts as a **ty
 - Greenfield repo, day 1.
 - You have already run `/setup-quality`, or you want to be reminded to do it before feature canonicals.
 - You want to seed 2-3 canonical patterns before letting agents loose.
-- See `agentic-playbook/04-greenfield-bootstrap.md` for context.
+- See `agentic-playbook/10-greenfield-bootstrap.md` for context.
 
 ## Steps
 

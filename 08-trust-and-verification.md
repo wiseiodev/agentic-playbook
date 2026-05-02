@@ -42,7 +42,7 @@ pnpm checks   # canonical: lint + types + tests + format
 
 Project-specific equivalents: `pnpm check`, `npm run validate`, `cargo check && cargo test`, `make ci`.
 
-**Add the exact command to root AGENTS.md / CLAUDE.md** so every agent uses the same one. For Node/TypeScript repos, use [13-quality-gates](./13-quality-gates.md) and `/setup-quality` to converge on the preferred Biome, Vitest, Commitlint, Lefthook, pnpm, and CI shape.
+**Add the exact command to root AGENTS.md / CLAUDE.md** so every agent uses the same one. For Node/TypeScript repos, use [05-quality-gates](./05-quality-gates.md) and `/setup-quality` to converge on the preferred Biome, Vitest, Commitlint, Lefthook, pnpm, and CI shape.
 
 For UI changes, add:
 - Open in browser via Playwright
@@ -114,7 +114,7 @@ Even with gates, you'll want to introspect. Useful surfaces:
 - **Reviewer subagent output** kept as PR comment = record of flags caught.
 - **Agent-doc changelog** when you tighten constraints = pattern of failures over time.
 
-Don't build dashboards. The above is enough for solo. When team scales, see [10-sharing-with-team](./10-sharing-with-team.md).
+Don't build dashboards. The above is enough for solo. When team scales, see [13-sharing-with-team](./13-sharing-with-team.md).
 
 ## When trust is broken
 

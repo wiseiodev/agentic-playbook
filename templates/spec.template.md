@@ -1,6 +1,6 @@
 # <slice title>
 
-<!-- One slice = one tracer bullet, 1-3 hours. See agentic-playbook/02-spec-format.md. -->
+<!-- One slice = one tracer bullet, 1-3 hours. See agentic-playbook/03-spec-format.md. -->
 
 ## Intent
 

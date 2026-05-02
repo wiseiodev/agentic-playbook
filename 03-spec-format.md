@@ -1,4 +1,4 @@
-# 02 — Spec Format
+# 03 — Spec Format
 
 The single most leveraged document in your workflow. The spec is what stops a smart model from inventing factories you didn't ask for.
 

@@ -1,4 +1,4 @@
-# 04 — Greenfield Bootstrap
+# 10 — Greenfield Bootstrap
 
 Greenfield is where smart models overengineer the most — there's no existing code to imitate, so the model invents from training data which favors enterprise/Java patterns. The cure is a **deliberate scaffolding investment by you, the human, in the first 1-2 days**.
 
@@ -32,7 +32,7 @@ Common shapes (pick the 2-3 most relevant for your project):
 
 For each reference feature:
 
-1. **Write the spec yourself** in the canonical format ([02-spec-format](./02-spec-format.md)). This is also a chance to refine the spec template.
+1. **Write the spec yourself** in the canonical format ([03-spec-format](./03-spec-format.md)). This is also a chance to refine the spec template.
 2. **Write the code yourself** — or use Claude as a typing assistant under tight rein. You drive every architectural choice.
 3. **No premature abstraction.** Even if you "know" you'll need a helper later, write it inline first. Three callers later, refactor.
 4. **No defensive code.** Errors propagate. Don't catch what you don't have a plan for.
