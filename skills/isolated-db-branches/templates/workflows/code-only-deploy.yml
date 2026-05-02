@@ -1,0 +1,23 @@
+name: code-only-deploy
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - '<schema-source-glob>'
+      - '<migrations-dir>/**'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-prod
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy to production
+        run: echo "Replace this with the repo's production deploy command."

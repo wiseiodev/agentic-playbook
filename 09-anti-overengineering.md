@@ -1,4 +1,4 @@
-# 05 — Anti-Overengineering
+# 09 — Anti-Overengineering
 
 Your top failure modes: **premature abstraction** and **defensive code**.
 Both are avoidable upstream. This doc gives you the canonical constraints list for progressive-disclosure agent docs and the anti-overengineering review subagent.

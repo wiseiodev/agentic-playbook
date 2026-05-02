@@ -1,12 +1,12 @@
-# 11 — Monday Checklist
+# 00 — Quick Start
 
 Your day-1 setup. Roughly 4 hours of human time. Pays back within the first week.
 
 ## Pre-Monday (Sunday night, 30 min)
 
-- [ ] Read [00-philosophy](./00-philosophy.md) and [05-anti-overengineering](./05-anti-overengineering.md)
+- [ ] Read [14-philosophy](./14-philosophy.md) and [09-anti-overengineering](./09-anti-overengineering.md)
 - [ ] Decide stack (you'll commit Monday morning)
-- [ ] Skim [04-greenfield-bootstrap](./04-greenfield-bootstrap.md) to anticipate the 2-3 reference features
+- [ ] Skim [10-greenfield-bootstrap](./10-greenfield-bootstrap.md) to anticipate the 2-3 reference features
 
 ## Monday AM (3-4 hours)
 
@@ -24,7 +24,7 @@ Your day-1 setup. Roughly 4 hours of human time. Pays back within the first week
 - [ ] Copy `templates/agent-docs/docs/agent/` → `docs/agent/`
 
 ### 3. Set up quality gates (~30-45 min)
-- [ ] Run `/setup-quality` or follow [13-quality-gates](./13-quality-gates.md)
+- [ ] Run `/setup-quality` or follow [05-quality-gates](./05-quality-gates.md)
 - [ ] Pin Node in `.nvmrc` and package manager in `packageManager`
 - [ ] Add or confirm Biome, Vitest, and the canonical `checks`/`check` command
 - [ ] Add Commitlint + Lefthook if commits should close Linear/GitHub work
@@ -32,7 +32,7 @@ Your day-1 setup. Roughly 4 hours of human time. Pays back within the first week
 
 ### 4. Drop in subagents + skills + hooks (~30 min)
 - [ ] Copy `subagents/` → `.claude/agents/`
-- [ ] Copy `skills/` → `.claude/skills/`
+- [ ] Install selected skills with `npx skills add wiseiodev/agentic-playbook/skills/<skill>` or copy `skills/` → `.claude/skills/` if the repo cannot use the CLI
 - [ ] Copy `hooks/` → wire into `.claude/settings.json`
 - [ ] Copy `templates/work-metrics.template.json` and `scripts/summarize-work-metrics.sh`
 
@@ -86,4 +86,4 @@ If you see these, **stop and tighten** before scaling parallelism:
 
 - **End of week 1**: re-read playbook, edit anything that didn't hold up
 - **End of week 2**: try 3 concurrent worktrees if rework, review load, and waivers are flat
-- **End of month 1**: write team-onboarding doc (see [10-sharing-with-team](./10-sharing-with-team.md))
+- **End of month 1**: write team-onboarding doc (see [13-sharing-with-team](./13-sharing-with-team.md))

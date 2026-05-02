@@ -13,6 +13,7 @@ For agent-owned implementation, use `/work` as the default loop. It authorizes a
 Use these when the human wants to control a phase:
 
 - `/linearize` for idea to Linear Project and approved issue queue
+- `/isolated-db-branches` for Drizzle + Neon branch database setup
 - `/plan` before non-trivial implementation
 - `/implement` after the plan is approved
 - `/review` for anti-overengineering review

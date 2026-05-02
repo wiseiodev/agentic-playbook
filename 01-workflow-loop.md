@@ -1,4 +1,4 @@
-# 06 — Workflow Loop
+# 01 — Workflow Loop
 
 The default path for agent-owned implementation is `/work`: one scoped work item, full ceremony, Ready PR. The lower-level skills still exist, but `/work` is the operating contract when you want an agent to carry the slice end-to-end.
 
@@ -78,7 +78,7 @@ If the source is ambiguous, the agent uses the question tool. If the answer is d
 
 ### Phase 1 — Spec
 
-Every non-trivial slice gets a spec using [02-spec-format](./02-spec-format.md).
+Every non-trivial slice gets a spec using [03-spec-format](./03-spec-format.md).
 
 The behavior section is mandatory:
 

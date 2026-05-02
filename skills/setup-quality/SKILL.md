@@ -7,7 +7,7 @@ description: Set up or tighten a repo's preferred quality-gate toolchain. Use wh
 
 Set up the repo's quality gates in the smallest conventional shape. Preserve existing conventions first; apply the playbook defaults only where the repo is missing a decision.
 
-Reference: `agentic-playbook/13-quality-gates.md`. Templates live in `agentic-playbook/templates/quality/`.
+Reference: `agentic-playbook/05-quality-gates.md`. Templates live in `agentic-playbook/templates/quality/`.
 
 ## 1. Inspect first
 

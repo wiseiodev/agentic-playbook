@@ -1,4 +1,4 @@
-# 01 — Context Engineering
+# 02 — Context Engineering
 
 The information the model sees, when it sees it, in what order, with what weight.
 This is the single highest-leverage discipline in agentic engineering.
@@ -79,7 +79,7 @@ Mark canonical files explicitly. Two ways:
 
 Both. Belt + suspenders. Models miss either alone.
 
-Coverage target: 2-3 distinct shapes. See [04-greenfield-bootstrap](./04-greenfield-bootstrap.md).
+Coverage target: 2-3 distinct shapes. See [10-greenfield-bootstrap](./10-greenfield-bootstrap.md).
 
 ## Layer 3 — Per-area AGENTS.md / CONTEXT.md
 
@@ -105,12 +105,12 @@ Gate the plan with:
 - "Does the plan introduce an abstraction not in the spec?" (if yes → reject)
 - "Does the plan add files outside the spec's scope?" (if yes → reject)
 
-See [06-workflow-loop](./06-workflow-loop.md) for the plan gate mechanics.
+See [01-workflow-loop](./01-workflow-loop.md) for the plan gate mechanics.
 
 ## Layer 5 — Per-task spec
 
 Every non-trivial task gets a spec. Format: Given/When/Then + constraints + examples.
-See [02-spec-format](./02-spec-format.md) for the canonical shape.
+See [03-spec-format](./03-spec-format.md) for the canonical shape.
 
 The spec is the single highest-leverage place to prevent overengineering.
 **Treat the spec as code.** Iterate it. Reuse phrases that worked.

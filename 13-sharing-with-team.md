@@ -1,4 +1,4 @@
-# 10 — Sharing with Team
+# 13 — Sharing with Team
 
 The playbook starts as your solo system. It becomes the team's standard as you hire. This doc is the adoption ramp.
 
@@ -27,8 +27,8 @@ Goals:
 
 What to write down:
 
-- Update `05-anti-overengineering.md` with new failure modes you saw
-- Update `02-spec-format.md` if you added/removed slots
+- Update `09-anti-overengineering.md` with new failure modes you saw
+- Update `03-spec-format.md` if you added/removed slots
 - Update AGENTS/CLAUDE templates with rules that proved out
 - Note in `STATUS.md` or a journal: "this week's biggest learning"
 
@@ -63,7 +63,7 @@ Calibrate gates harder for the first 5 PRs from a new teammate. False positives 
 
 Add to the playbook:
 
-- `ONBOARDING.md` — first-week checklist (variant of `11-monday-checklist`)
+- `ONBOARDING.md` — first-week checklist (variant of `00-quick-start`)
 - A shared Linear/Asana template for spec authoring
 - A "first slice" task that's deliberately shaped for learning
 
@@ -145,7 +145,7 @@ Good opener:
 
 > "We hit 2-3x throughput by treating the spec and the plan as more important than the code. The cure for overengineering isn't reviewing harder — it's specifying tighter. Everything in this playbook is downstream of that."
 
-Then point at `00-philosophy.md` and `05-anti-overengineering.md`. Other sections come up as the work demands.
+Then point at `14-philosophy.md` and `09-anti-overengineering.md`. Other sections come up as the work demands.
 
 ## Resistance you'll hit
 

@@ -1,0 +1,40 @@
+name: db-validate-pr
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '<schema-source-glob>'
+
+permissions:
+  contents: read
+
+jobs:
+  validate-schema:
+    runs-on: ubuntu-latest
+    env:
+      NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
+      NEON_PROJECT_ID: ${{ secrets.NEON_PROJECT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          package_json_file: package.json
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: npm i -g neonctl
+      - name: Ensure Neon branch
+        id: branch
+        run: |
+          BRANCH="${{ github.head_ref }}"
+          neonctl branches get "$BRANCH" --project-id "$NEON_PROJECT_ID" --api-key "$NEON_API_KEY" \
+            || neonctl branches create --name "$BRANCH" --parent "${NEON_PARENT_BRANCH:-production}" --project-id "$NEON_PROJECT_ID" --api-key "$NEON_API_KEY"
+          URL=$(neonctl connection-string "$BRANCH" --project-id "$NEON_PROJECT_ID" --api-key "$NEON_API_KEY")
+          echo "database_url=$URL" >> "$GITHUB_OUTPUT"
+      - name: Push schema
+        env:
+          DATABASE_URL: ${{ steps.branch.outputs.database_url }}
+        run: pnpm db:push

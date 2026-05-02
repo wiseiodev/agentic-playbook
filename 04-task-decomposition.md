@@ -1,4 +1,4 @@
-# 03 — Task Decomposition
+# 04 — Task Decomposition
 
 Smaller slices have less surface for overengineering and parallelize cleanly. The unit is the **tracer bullet**.
 
